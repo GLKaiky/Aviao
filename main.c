@@ -6,6 +6,8 @@
 int Listar_Passagens();
 int Cadastro_de_Passagens();
 void pesquisar();
+void Excluir();
+
 // Struct de passagens
 typedef struct passagens
 {
@@ -13,7 +15,7 @@ typedef struct passagens
     char codAeroporto_Destino[100];
     char CidadeOrigem[100];
     char CidadeDestino[100];
-    char Data[10];
+    char Data[15];
     char Hora_Partida[100];
     char Hora_Chegada[100];
     double ValorPassagem;
@@ -136,7 +138,15 @@ int main()
     printf("5-Excluir uma passagem\n");
     puts("6-Sair do programa\n");
 
+    do{
     scanf("%d", &opcao);
+
+    if(opcao < 1 || opcao > 6){
+        puts("Apenas as opçoes de 1 a 6");
+        puts("Digite novamente:");
+    }
+
+    }while(opcao < 1 || opcao > 6);
 
     switch (opcao)
     {
@@ -153,7 +163,7 @@ int main()
 
         break;
     case 5:
-
+        Excluir();
         break;
     case 6:
         puts("Finalizando...");
@@ -284,7 +294,7 @@ int Cadastro_de_Passagens()
         puts("Digite o mês da viagem (dois digitos): ");
         do
         {
-            
+
             fgets(P.Data + 3, 10, stdin); // Lê dois dígitos para o mês
             TiraN(P.Data + 3);
 
@@ -308,7 +318,7 @@ int Cadastro_de_Passagens()
 
         puts("Digite o ano da viagem (quatro dígitos): ");
         do{
-            
+
             fgets(P.Data + 6, 10, stdin);
             TiraN(P.Data + 6);
 
@@ -459,6 +469,23 @@ int Cadastro_de_Passagens()
     main();
 }
 
+int Listar_Passagens2()
+{
+    FILE *arquivo = fopen("passagens.txt", "r");
+
+    char linhas[1000];
+
+
+    puts("---------------------------------------------------------");
+    while (fgets(linhas, sizeof(linhas), arquivo) != NULL)
+    {
+        printf("%s", linhas);
+    }
+    puts("---------------------------------------------------------");
+
+    fclose(arquivo);
+}
+
 int Listar_Passagens()
 {
     FILE *arquivo = fopen("passagens.txt", "r");
@@ -466,7 +493,7 @@ int Listar_Passagens()
     char linhas[1000];
 
 
-    puts("--------------------------------------------------------");
+    puts("---------------------------------------------------------");
     while (fgets(linhas, sizeof(linhas), arquivo) != NULL)
     {
         printf("%s", linhas);
@@ -477,8 +504,44 @@ int Listar_Passagens()
     return main();
 }
 
+void Excluir(){
+    FILE* arquivo;
+    int Linha = ContaLinha();
+    passagens P[Linha];
+    passagens G;
+    puts("Excluir passagens, digite o ID da passagem que deseja excluir\n");
+    Listar_Passagens2();
+    scanf("%d", &G.ID);
+
+    arquivo = fopen("passagens.txt", "r");
+    for(int i = 0; i<Linha; i++){
+        fscanf(arquivo, " %d;%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];R$%lf", &P[i].ID,
+        P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
+        P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
+        P[i].Hora_Partida, P[i].Hora_Chegada, &P[i].ValorPassagem);
+    }
+    fclose(arquivo);
+
+    for(int i = 1; i<Linha; i++){
+       if(G.ID == P[i].ID){
+        printf("%d;%s;%s;%s;%s;%s;%s;%s;%.2lf", P[i].ID,
+        P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
+        P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
+        P[i].Hora_Partida, P[i].Hora_Chegada, P[i].ValorPassagem);
+        P[i].ID = ' ';
+
+        fseek(arquivo, 0, SEEK_CUR);
+
+       }
+    }
+}
+
 void pesquisar()
 {
+
+
+
+
     char SN[3];
     int A;
     int linhas = ContaLinha();
@@ -558,7 +621,7 @@ void pesquisar()
             if(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") != 0){
                 puts("Apenas sim ou nao");
             }
-            
+
             teste = linhas;
 
             }while(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") != 0);
@@ -569,7 +632,7 @@ void pesquisar()
             puts("Fazer outro teste?");
             fgets(SN, 4, stdin);
             LetrasMaiusculas(SN);
-            
+
             if(strcmp(SN, "NAO") == 0){
                 break;
             }
@@ -641,7 +704,7 @@ void pesquisar()
             if(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") != 0){
                 puts("Apenas sim ou nao");
             }
-            
+
             teste = linhas;
 
             }while(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") != 0);
@@ -652,7 +715,7 @@ void pesquisar()
             puts("Fazer outro teste?");
             fgets(SN, 4, stdin);
             LetrasMaiusculas(SN);
-            
+
             if(strcmp(SN, "NAO") == 0){
                 break;
             }
@@ -717,7 +780,7 @@ void pesquisar()
             if(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") != 0){
                 puts("Apenas sim ou nao");
             }
-            
+
             teste = linhas;
 
             }while(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") != 0);
@@ -728,7 +791,7 @@ void pesquisar()
             puts("Fazer outro teste?");
             fgets(SN, 4, stdin);
             LetrasMaiusculas(SN);
-            
+
             if(strcmp(SN, "NAO") == 0){
                 break;
             }
@@ -780,9 +843,9 @@ void pesquisar()
         }
 
        if(teste == 0){
-            
+
             do{
-            puts("Não encontrado, tentar novamente? Sim ou Nao");   
+            puts("Não encontrado, tentar novamente? Sim ou Nao");
             fgets(SN, 4, stdin);
             LetrasMaiusculas(SN);
 
@@ -793,7 +856,7 @@ void pesquisar()
             if(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") != 0){
                 puts("Apenas sim ou nao");
             }
-            
+
             teste = linhas;
 
             }while(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") != 0);
@@ -804,11 +867,11 @@ void pesquisar()
             puts("Fazer outro teste?");
             fgets(SN, 4, stdin);
             LetrasMaiusculas(SN);
-            
+
             if(strcmp(SN, "NAO") == 0){
                 break;
             }
-            
+
             if(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") != 0){
                 puts("Apenas sim ou nao");
             }
