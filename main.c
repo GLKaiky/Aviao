@@ -186,6 +186,7 @@ int Cadastro_de_Passagens()
     // Codigo de Aeroporto de Origem
     do
     {
+        
         fprintf(arquivo, "%d;", P.ID);
         do
         {
@@ -462,6 +463,7 @@ int Cadastro_de_Passagens()
         LetrasMaiusculas(parada);
 
         getchar();
+        P.ID++;
 
     } while (strcmp(parada, "SIM") == 0);
     fclose(arquivo);
@@ -522,25 +524,29 @@ void Excluir(){
     }
     fclose(arquivo);
 
-    for(int i = 1; i<Linha; i++){
-       if(G.ID == P[i].ID){
-        printf("%d;%s;%s;%s;%s;%s;%s;%s;%.2lf", P[i].ID,
-        P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
-        P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
-        P[i].Hora_Partida, P[i].Hora_Chegada, P[i].ValorPassagem);
-        P[i].ID = ' ';
+    
+    arquivo = fopen("passagens.txt", "w");
+    
 
-        fseek(arquivo, 0, SEEK_CUR);
+    for (int i = 0; i < Linha; i++) {
+        if (G.ID == P[i].ID) {
+            printf("%d;", P[i+1].ID);
+            printf("%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i+1].codAeroporto_Origem, P[i+1].codAeroporto_Destino,
+            P[i+1].CidadeOrigem, P[i+1].CidadeDestino, P[i+1].Data,
+            P[i+1].Hora_Partida, P[i+1].Hora_Chegada, P[i+1].ValorPassagem);
 
-       }
+            fprintf(arquivo, "%d;", P[i+1].ID);
+            fprintf(arquivo, "%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i+1].codAeroporto_Origem, P[i+1].codAeroporto_Destino,
+            P[i+1].CidadeOrigem, P[i+1].CidadeDestino, P[i+1].Data,
+            P[i+1].Hora_Partida, P[i+1].Hora_Chegada, P[i+1].ValorPassagem);
+        }
     }
+
+    fclose(arquivo);
 }
 
 void pesquisar()
 {
-
-
-
 
     char SN[3];
     int A;
