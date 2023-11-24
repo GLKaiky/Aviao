@@ -108,6 +108,270 @@ int ApenasNumeros(char *str)
     return 1;
 }
 
+passagens Cad_Mod(int ID){
+    passagens P;
+
+        P.ID = ID;
+        do
+        {
+            getchar();
+            puts("Digite o Codigo do Areoporto de Origem (apenas letras)");
+            fgets(P.codAeroporto_Origem, 100, stdin);
+            TiraN(P.codAeroporto_Origem);
+
+            if (ApenasLetras(P.codAeroporto_Origem) == 0)
+            {
+                printf("Codigo do Aeroporto deve conter apenas letras.\n");
+            }
+
+            if (verificarTam(P.codAeroporto_Origem, 3) == 0)
+            {
+                printf("Digite apenas 3 letras.\n");
+            }
+        } while (ApenasLetras(P.codAeroporto_Origem) == 0 || verificarTam(P.codAeroporto_Origem, 3) == 0);
+
+        LetrasMaiusculas(P.codAeroporto_Origem);
+
+        // Cod do Aeroporto de Destino
+
+        do
+        {
+
+            puts("Digite o Codigo do Aeroporto de Destino (apenas letras)");
+            fgets(P.codAeroporto_Destino, 100, stdin);
+            TiraN(P.codAeroporto_Destino);
+
+            if (ApenasLetras(P.codAeroporto_Destino) == 0)
+            {
+                printf("Codigo do Aeroporto deve conter apenas letras.\n");
+            }
+
+            if (verificarTam(P.codAeroporto_Destino, 3) == 0)
+            {
+                printf("Digite apenas 3 letras.\n");
+            }
+
+        } while (ApenasLetras(P.codAeroporto_Destino) == 0 || verificarTam(P.codAeroporto_Destino, 3) == 0);
+
+        LetrasMaiusculas(P.codAeroporto_Destino);
+
+        // Cidade de Origem
+
+        do
+        {
+            puts("Digite a Cidade de Origem (apenas letras)");
+            fgets(P.CidadeOrigem, 101, stdin);
+            TiraN(P.CidadeOrigem);
+
+            if (ApenasLetras(P.CidadeOrigem) == 0)
+            {
+                printf("Nome da cidade pode conter apenas letras, sem caracteres ou numeros.\n");
+            }
+        } while (ApenasLetras(P.CidadeOrigem) == 0);
+
+        LetrasMaiusculas(P.CidadeOrigem);
+
+        // Cidade de Destino
+
+        do
+        {
+            puts("Digite a Cidade de Destino (apenas Letras)");
+            fgets(P.CidadeDestino, 101, stdin);
+            TiraN(P.CidadeDestino);
+
+            if (ApenasLetras(P.CidadeDestino) == 0)
+            {
+                printf("Nome da cidade pode conter apenas letras, sem caracteres ou numeros.\n");
+            }
+        } while (ApenasLetras(P.CidadeDestino) == 0);
+
+        LetrasMaiusculas(P.CidadeDestino);
+
+        // Data
+
+        puts("Digite a data, sera registrada no formado dd/mm/YYYY");
+        puts("Digite o dia da viagem");
+
+        do
+        {
+            fgets(P.Data, 10, stdin);
+            TiraN(P.Data);
+            if (ApenasNumeros(P.Data) == 0)
+            {
+                puts("Digite apenas numeros");
+                puts("Digite o dia da viagem");
+            }
+
+            int A = atoi(P.Data);
+
+            if (A > 31 || A < 1)
+            {
+                puts("Numeros entre 1 e 31");
+                puts("Digite o dia da viagem");
+            }
+        } while (ApenasNumeros(P.Data) == 0 || atoi(P.Data) > 31 || atoi(P.Data) < 1);
+
+        P.Data[2] = '/';
+
+        puts("Digite o mês da viagem (dois digitos): ");
+        do
+        {
+
+            fgets(P.Data + 3, 10, stdin); // Lê dois dígitos para o mês
+            TiraN(P.Data + 3);
+
+            if (ApenasNumeros(P.Data + 3) == 0)
+            {
+                puts("Digite apenas numeros");
+                puts("Digite o mes da viagem");
+            }
+
+            int mes = atoi(P.Data + 3);
+            if (mes > 12 || mes < 1)
+            {
+                puts("Mês deve estar entre 1 e 12");
+                puts("Digite o mes da viagem (dois digitos)");
+            }
+
+        } while (ApenasNumeros(P.Data + 3) == 0 || atoi(P.Data + 3) > 12 || atoi(P.Data) < 1);
+
+        P.Data[5] = '/';
+
+
+        puts("Digite o ano da viagem (quatro dígitos): ");
+        do{
+
+            fgets(P.Data + 6, 10, stdin);
+            TiraN(P.Data + 6);
+
+            if(ApenasNumeros(P.Data + 6) == 0){
+                puts("Digite apenas numeros");
+                puts("Digte o ano da viagem");
+            }
+
+            int ano = atoi(P.Data + 6);
+            if(ano > 2050){
+                puts("Ano indisponivel ainda");
+            }
+
+        }while(ApenasNumeros(P.Data + 6) == 0 || atoi(P.Data + 6) > 2050 || atoi(P.Data + 6) < 1000);
+
+
+        // Hora da partida
+
+        puts("Digite a Hora da partida (sera escrito HH:mm)");
+
+        do
+        {
+
+            puts("Digite as horas");
+            fgets(P.Hora_Partida, 5, stdin);
+            TiraN(P.Hora_Partida);
+
+            if (ApenasNumeros(P.Hora_Partida) == 0)
+            {
+                puts("Digite apenas numeros");
+                puts("Digite a Hora da partida");
+            }
+
+            int hr = atoi(P.Hora_Partida);
+            if (hr > 23 || hr < 0)
+            {
+                puts("Digite uma hora válida");
+                puts("Digite a hora da partida");
+            }
+
+        } while (ApenasNumeros(P.Hora_Partida) == 0 || atoi(P.Hora_Partida) > 23 || atoi(P.Hora_Partida) < 0);
+
+        P.Hora_Partida[2] = ':';
+
+        puts("Digite os minutos");
+        do
+        {
+
+            fgets(P.Hora_Partida + 3, 5, stdin);
+            TiraN(P.Hora_Partida + 3);
+
+            if (ApenasNumeros(P.Hora_Partida + 3) == 0)
+            {
+                puts("Digite apenas numeros");
+                puts("Digite os minutos");
+            }
+
+            int hr = atoi(P.Hora_Partida + 3);
+            if (hr > 59 || hr < 0)
+            {
+                puts("Digite minutos validos");
+                puts("Digite os minutos");
+            }
+        } while (ApenasNumeros(P.Hora_Partida + 3) == 0 || atoi(P.Hora_Partida + 3) > 59 || atoi(P.Hora_Partida + 3) < 0);
+
+
+        // Hora da Chegada
+
+        puts("Digite a Hora da Chegada (sera escrito hh:mm)");
+
+        do
+        {
+
+            puts("Digite as horas");
+            fgets(P.Hora_Chegada, 5, stdin);
+            TiraN(P.Hora_Chegada);
+
+            if (ApenasNumeros(P.Hora_Chegada) == 0)
+            {
+                puts("Digite apenas numeros");
+                puts("Digite a Hora da Chegada");
+            }
+
+            int hr = atoi(P.Hora_Chegada);
+            if (hr > 23 || hr < 0)
+            {
+                puts("Digite uma hora válida");
+                puts("Digite a hora da Chegada");
+            }
+
+        } while (ApenasNumeros(P.Hora_Chegada) == 0 || atoi(P.Hora_Chegada) > 23 || atoi(P.Hora_Chegada) < 0);
+
+        P.Hora_Chegada[2] = ':';
+
+        puts("Digite os minutos");
+        do
+        {
+
+            fgets(P.Hora_Chegada + 3, 5, stdin);
+            TiraN(P.Hora_Chegada + 3);
+
+            if (ApenasNumeros(P.Hora_Chegada + 3) == 0)
+            {
+                puts("Digite apenas numeros");
+                puts("Digite os minutos");
+            }
+
+            int hr = atoi(P.Hora_Chegada + 3);
+            if (hr > 59 || hr < 0)
+            {
+                puts("Digite minutos validos");
+                puts("Digite os minutos");
+            }
+        } while (ApenasNumeros(P.Hora_Chegada + 3) == 0 || atoi(P.Hora_Chegada + 3) > 59 || atoi(P.Hora_Chegada + 3) < 0);
+
+
+        // valor da passagem
+        puts("Digite o valor da passagem em R$");
+
+        while (scanf("%lf", &P.ValorPassagem) != 1)
+        {
+            scanf("%lf", &P.ValorPassagem);
+            if (scanf("%lf", &P.ValorPassagem) == 0)
+            {
+                puts("Digite apenas numeros para o valor");
+                puts("Digite o valor da passagem em R$");
+            }
+        }
+
+    return P;
+}
 
 
 
@@ -160,7 +424,7 @@ int main()
         Cadastro_de_Passagens();
         break;
     case 4:
-
+        Editar();
         break;
     case 5:
         Excluir();
@@ -506,43 +770,119 @@ int Listar_Passagens()
     return main();
 }
 
-void Excluir(){
-    FILE* arquivo;
-    int Linha = ContaLinha();
-    passagens P[Linha];
-    passagens G;
-    puts("Excluir passagens, digite o ID da passagem que deseja excluir\n");
-    Listar_Passagens2();
-    scanf("%d", &G.ID);
+void Excluir() {
+    FILE* arquivo = fopen("passagens.txt", "r");
 
-    arquivo = fopen("passagens.txt", "r");
-    for(int i = 0; i<Linha; i++){
-        fscanf(arquivo, " %d;%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];R$%lf", &P[i].ID,
-        P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
-        P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
-        P[i].Hora_Partida, P[i].Hora_Chegada, &P[i].ValorPassagem);
+    int quantidadeLinhas = 0;
+    fscanf(arquivo, "%d", &quantidadeLinhas); // Lendo o primeiro numero do arquivo
+
+    if (quantidadeLinhas <= 0) {
+        printf("Arquivo vazio ou mal formatado.\n");
+        fclose(arquivo);
+        main();
+        printf("\n");
     }
+
+    passagens P[quantidadeLinhas];
+    int indice = 0;
+
+    while (fscanf(arquivo, "%d;%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];R$%lf\n", &P[indice].ID,
+                  P[indice].codAeroporto_Origem, P[indice].codAeroporto_Destino,
+                  P[indice].CidadeOrigem, P[indice].CidadeDestino, P[indice].Data,
+                  P[indice].Hora_Partida, P[indice].Hora_Chegada, &P[indice].ValorPassagem) == 9) {
+        indice++;
+    }
+
     fclose(arquivo);
 
-    
-    arquivo = fopen("passagens.txt", "w");
-    
+    int idExcluir;
 
-    for (int i = 0; i < Linha; i++) {
-        if (G.ID == P[i].ID) {
-            printf("%d;", P[i+1].ID);
-            printf("%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i+1].codAeroporto_Origem, P[i+1].codAeroporto_Destino,
-            P[i+1].CidadeOrigem, P[i+1].CidadeDestino, P[i+1].Data,
-            P[i+1].Hora_Partida, P[i+1].Hora_Chegada, P[i+1].ValorPassagem);
+    Listar_Passagens2();
 
-            fprintf(arquivo, "%d;", P[i+1].ID);
-            fprintf(arquivo, "%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i+1].codAeroporto_Origem, P[i+1].codAeroporto_Destino,
-            P[i+1].CidadeOrigem, P[i+1].CidadeDestino, P[i+1].Data,
-            P[i+1].Hora_Partida, P[i+1].Hora_Chegada, P[i+1].ValorPassagem);
+    printf("Digite o ID da passagem que deseja excluir: ");
+    scanf("%d", &idExcluir);
+
+    FILE* arquivoEscrita = fopen("passagens.txt", "w");
+
+
+    fprintf(arquivoEscrita, "%d\n", quantidadeLinhas - 1); // Escreve a nova quantidade de linhas
+
+    for (int i = 0; i < indice; i++) {
+        if (P[i].ID != idExcluir) {
+            fprintf(arquivoEscrita, "%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i].ID,
+                    P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
+                    P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
+                    P[i].Hora_Partida, P[i].Hora_Chegada, P[i].ValorPassagem);
         }
     }
 
+    fclose(arquivoEscrita);
+    puts("Retornando ao menu");
+    main();
+}
+
+void Editar(){
+    
+    FILE* arquivo = fopen("passagens.txt", "r");
+
+    int quantidadeLinhas = 0;
+    fscanf(arquivo, "%d", &quantidadeLinhas); // Lendo o primeiro numero do arquivo
+
+    if (quantidadeLinhas <= 0) {
+        printf("Arquivo vazio ou mal formatado.\n");
+        fclose(arquivo);
+        main();
+        printf("\n");
+    }
+
+    passagens P[quantidadeLinhas];
+    
+    int indice = 0;
+
+    while (fscanf(arquivo, "%d;%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];R$%lf\n", &P[indice].ID,
+                  P[indice].codAeroporto_Origem, P[indice].codAeroporto_Destino,
+                  P[indice].CidadeOrigem, P[indice].CidadeDestino, P[indice].Data,
+                  P[indice].Hora_Partida, P[indice].Hora_Chegada, &P[indice].ValorPassagem) == 9) {
+        indice++;
+    }
+
     fclose(arquivo);
+
+    int idEditar;
+
+    Listar_Passagens2();
+
+
+    printf("Digite o ID da passagem que deseja editar: ");
+    scanf("%d", &idEditar);
+
+    
+
+    
+
+    FILE* arquivoEscrita = fopen("passagens.txt", "w");
+
+    fprintf(arquivoEscrita, "%d\n", quantidadeLinhas);
+    
+    for (int i = 0; i < indice; i++) {
+        if (P[i].ID != idEditar) {
+            fprintf(arquivoEscrita, "%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i].ID,
+                    P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
+                    P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
+                    P[i].Hora_Partida, P[i].Hora_Chegada, P[i].ValorPassagem);
+        }else if(P[i].ID == idEditar){
+            fprintf(arquivoEscrita, "%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", G.ID,
+                    G.codAeroporto_Origem, G.codAeroporto_Destino,
+                    G.CidadeOrigem, G.CidadeDestino, G.Data,
+                    G.Hora_Partida, G.Hora_Chegada, G.ValorPassagem);
+        }
+    }
+
+    fclose(arquivoEscrita);
+    puts("Editado com sucesso!");
+    puts("Retornando ao menu");
+    main();
+
 }
 
 void pesquisar()
