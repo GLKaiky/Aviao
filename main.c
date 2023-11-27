@@ -108,6 +108,7 @@ int ApenasNumeros(char *str)
     return 1;
 }
 
+
 passagens Cad_Mod(int ID){
     passagens P;
 
@@ -374,7 +375,6 @@ passagens Cad_Mod(int ID){
 }
 
 
-
 int main()
 {
 
@@ -390,7 +390,7 @@ int main()
 
     fclose(arquivo);
 
-    int opcao;
+    char opcao[100];
 
     printf("Cadastro de Passagens, bem vindo\n");
     puts("Selecione uma opcao para prosseguir:");
@@ -403,16 +403,22 @@ int main()
     puts("6-Sair do programa\n");
 
     do{
-    scanf("%d", &opcao);
+    fgets(opcao, sizeof(opcao), stdin);
+    TiraN(opcao);
+    
+    
 
-    if(opcao < 1 || opcao > 6){
-        puts("Apenas as opçoes de 1 a 6");
+    if(atoi(opcao) < 1 || atoi(opcao) > 6 || ApenasNumeros(opcao) == 0){
+        puts("Apenas as opcoes de 1 a 6");
         puts("Digite novamente:");
     }
 
-    }while(opcao < 1 || opcao > 6);
+    }while(atoi(opcao) < 1 || atoi(opcao) > 6 || ApenasNumeros(opcao) == 0);
+    
+    int opcao1 = atoi(opcao);
 
-    switch (opcao)
+
+    switch (opcao1)
     {
     case 1:
         Listar_Passagens();
@@ -443,14 +449,13 @@ int Cadastro_de_Passagens()
 
     passagens P;
     FILE *arquivo = fopen("passagens.txt", "a");
-    getchar(); // Limpar o buffer
 
     P.ID = ContaLinha();
 
     // Codigo de Aeroporto de Origem
     do
     {
-        
+
         fprintf(arquivo, "%d;", P.ID);
         do
         {
@@ -799,8 +804,22 @@ void Excluir() {
 
     Listar_Passagens2();
 
+    int verificador = 0;
+    do{
     printf("Digite o ID da passagem que deseja excluir: ");
     scanf("%d", &idExcluir);
+
+    for(int i = 0; i<quantidadeLinhas; i++){
+        if(P[i].ID == idExcluir){
+            puts("Encontrado");
+            verificador = 1;
+        }
+    }
+    if(verificador == 0){
+        puts("Não encontrado, tente novamente");
+    }
+
+    }while(verificador == 0);
 
     FILE* arquivoEscrita = fopen("passagens.txt", "w");
 
@@ -818,11 +837,12 @@ void Excluir() {
 
     fclose(arquivoEscrita);
     puts("Retornando ao menu");
+    getchar();
     main();
 }
 
 void Editar(){
-    
+
     FILE* arquivo = fopen("passagens.txt", "r");
 
     int quantidadeLinhas = 0;
@@ -852,18 +872,27 @@ void Editar(){
 
     Listar_Passagens2();
 
-
+    int verificador = 0;
+    do{
     printf("Digite o ID da passagem que deseja editar: ");
     scanf("%d", &idEditar);
-
     
+    for(int i = 0; i<quantidadeLinhas; i++){
+        if(P[i].ID == idEditar){
+            puts("Encontrado");
+            verificador = 1;
+        }
+    }
 
-    
+    if(verificador == 0){
+        puts("Nao encontrado, tente novamente");
+    }
+    }while(verificador == 0);
 
     FILE* arquivoEscrita = fopen("passagens.txt", "w");
 
     fprintf(arquivoEscrita, "%d\n", quantidadeLinhas);
-    
+
     for (int i = 0; i < indice; i++) {
         if (P[i].ID != idEditar) {
             fprintf(arquivoEscrita, "%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i].ID,
@@ -871,6 +900,8 @@ void Editar(){
                     P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
                     P[i].Hora_Partida, P[i].Hora_Chegada, P[i].ValorPassagem);
         }else if(P[i].ID == idEditar){
+            passagens G = Cad_Mod(idEditar);
+
             fprintf(arquivoEscrita, "%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", G.ID,
                     G.codAeroporto_Origem, G.codAeroporto_Destino,
                     G.CidadeOrigem, G.CidadeDestino, G.Data,
@@ -895,7 +926,8 @@ void pesquisar()
 
     FILE *arquivo = fopen("passagens.txt", "r");
 
-
+    int quantidadedelinhas;
+    fscanf(arquivo, "%d", &quantidadedelinhas);
     passagens P[linhas];
     passagens G;
 
@@ -908,17 +940,79 @@ void pesquisar()
 
     fclose(arquivo);
 
-     puts("Por qual maneira você deseja pesquisar?");
-     puts("1-Aeroporto de Origem");
-     puts("2-Aeroporto de Destino");
-     puts("3-Cidade de Origem");
-     puts("4-Cidade de Destino");
+     puts("Por qual maneira voce deseja pesquisar?");
+     puts("1-ID da passagem");
+     puts("2-Aeroporto de Origem");
+     puts("3-Aeroporto de Destino");
+     puts("4-Cidade de Origem");
+     puts("5-Cidade de Destino");
 
      scanf("%d", &A);
      switch(A){
+        
+        int verificar;
 
-        //Pesquisa por aeroporto de origem
+        //Pesquisa por ID
         case 1:
+
+        do{
+        puts("Digite o ID da passagem que deseja pesquisar");
+        scanf("%d", &G.ID);
+        verificar = 0;
+        
+
+        for(int i = 0; i<linhas; i++){
+            if(P[i].ID == G.ID){
+                printf("Encontrado:\n");
+                printf("%d;%s;%s;%s;%s;%s;%s;%s;%.2lf\n",P[i].ID,
+                P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
+                P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
+                P[i].Hora_Partida, P[i].Hora_Chegada, P[i].ValorPassagem);
+                verificar = 1;
+            }
+        }
+        if(verificar == 0){
+
+            getchar();
+            do{
+            puts("Nao encontrado, tentar novamente? Sim ou Nao");
+            fgets(SN, 4, stdin);
+            LetrasMaiusculas(SN);
+
+            if(strcmp(SN, "NAO") == 0){
+                break;
+            }
+
+            if(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") != 0){
+            }   
+
+            
+            }while(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") != 0);
+
+        }else if(verificar == 1){
+
+            getchar();
+            do{
+            puts("Fazer outro teste?");
+            fgets(SN, 4, stdin);
+            LetrasMaiusculas(SN);
+
+            if(strcmp(SN, "NAO") == 0){
+                break;
+            }
+            if(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") != 0){
+                puts("Apenas sim ou nao");
+            }
+
+            }while(strcmp(SN, "SIM") != 0 && strcmp(SN, "NAO") !=0);
+
+        }
+        }while(verificar == 0);
+
+        break;
+        
+        //Pesquisa por aeroporto de origem
+        case 2:
 
         do{
         getchar();
@@ -956,7 +1050,7 @@ void pesquisar()
         if(teste == 0){
 
             do{
-            puts("Não encontrado, tentar novamente? Sim ou Nao");
+            puts("Nao encontrado, tentar novamente? Sim ou Nao");
             fgets(SN, 4, stdin);
             LetrasMaiusculas(SN);
 
@@ -995,7 +1089,7 @@ void pesquisar()
 
         break;
 
-        case 2:
+        case 3:
 
         //Pesquisa por aeroporto de destino
 
@@ -1039,7 +1133,7 @@ void pesquisar()
        if(teste == 0){
 
             do{
-            puts("Não encontrado, tentar novamente? Sim ou Nao");
+            puts("Nao encontrado, tentar novamente? Sim ou Nao");
             fgets(SN, 4, stdin);
             LetrasMaiusculas(SN);
 
@@ -1080,7 +1174,7 @@ void pesquisar()
 
         //Pesquisa por cidade de origem
 
-        case 3:
+        case 4:
             do{
             getchar();
             do
@@ -1115,7 +1209,7 @@ void pesquisar()
        if(teste == 0){
 
             do{
-            puts("Não encontrado, tentar novamente? Sim ou Nao");
+            puts("Nao encontrado, tentar novamente? Sim ou Nao");
             fgets(SN, 4, stdin);
             LetrasMaiusculas(SN);
 
@@ -1156,7 +1250,7 @@ void pesquisar()
 
         //Pesquisa por cidade de destino
 
-        case 4:
+        case 5:
             do{
             getchar();
             do
@@ -1191,7 +1285,7 @@ void pesquisar()
        if(teste == 0){
 
             do{
-            puts("Não encontrado, tentar novamente? Sim ou Nao");
+            puts("Nao encontrado, tentar novamente? Sim ou Nao");
             fgets(SN, 4, stdin);
             LetrasMaiusculas(SN);
 
