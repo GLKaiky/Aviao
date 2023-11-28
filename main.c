@@ -78,7 +78,7 @@ int ContaLinha()
 
     return linhas;
 }
-// ultimo ID
+// Ultimo ID
 int UltimoID()
 {
     FILE *arquivo = fopen("passagens.txt", "r");
@@ -254,6 +254,11 @@ passagens Cad_Mod(int ID)
             puts("Numeros entre 1 e 31");
             puts("Digite o dia da viagem");
         }
+
+        if(strlen(P.Data)==1)
+        {
+            sprintf(P.Data, "%02d", atoi(P.Data));
+        }
     }
     while (ApenasNumeros(P.Data) == 0 || atoi(P.Data) > 31 || atoi(P.Data) < 1);
 
@@ -277,6 +282,11 @@ passagens Cad_Mod(int ID)
         {
             puts("Mês deve estar entre 1 e 12");
             puts("Digite o mes da viagem (dois digitos)");
+        }
+
+        if(strlen(P.Data+3) == 1)
+        {
+            sprintf(P.Data + 3, "%02d", atoi(P.Data + 3));
         }
 
     }
@@ -330,7 +340,10 @@ passagens Cad_Mod(int ID)
             puts("Digite a hora da partida");
         }
 
-
+        if (strlen(P.Hora_Partida) == 1)
+        {
+            sprintf(P.Hora_Partida, "%02d", atoi(P.Hora_Partida));
+        }
 
     }
     while (ApenasNumeros(P.Hora_Partida) == 0 || atoi(P.Hora_Partida) > 23 || atoi(P.Hora_Partida) < 0 );
@@ -355,6 +368,11 @@ passagens Cad_Mod(int ID)
         {
             puts("Digite minutos validos");
             puts("Digite os minutos");
+        }
+
+        if (strlen(P.Hora_Partida + 3) == 1)
+        {
+            sprintf(P.Hora_Partida + 3, "%02d", atoi(P.Hora_Partida + 3));
         }
     }
     while (ApenasNumeros(P.Hora_Partida + 3) == 0 || atoi(P.Hora_Partida + 3) > 59 || atoi(P.Hora_Partida + 3) < 0);
@@ -383,6 +401,11 @@ passagens Cad_Mod(int ID)
             puts("Digite a hora da Chegada");
         }
 
+        if (strlen(P.Hora_Chegada) == 1)
+        {
+            sprintf(P.Hora_Chegada, "%02d", atoi(P.Hora_Chegada));
+        }
+
     }
     while (ApenasNumeros(P.Hora_Chegada) == 0 || atoi(P.Hora_Chegada) > 23 || atoi(P.Hora_Chegada) < 0);
 
@@ -407,18 +430,24 @@ passagens Cad_Mod(int ID)
             puts("Digite minutos validos");
             puts("Digite os minutos");
         }
+
+        if (strlen(P.Hora_Chegada + 3) == 1)
+        {
+            sprintf(P.Hora_Chegada + 3, "%02d", atoi(P.Hora_Chegada + 3));
+        }
+
     }
     while (ApenasNumeros(P.Hora_Chegada + 3) == 0 || atoi(P.Hora_Chegada + 3) > 59 || atoi(P.Hora_Chegada + 3) < 0);
 
     // valor da passagem
     puts("Digite o valor da passagem em R$");
 
-        while (scanf("%lf", &P.ValorPassagem) != 1)
-        {
-            printf("Digite apenas números para o valor.\n");
-            printf("Digite o valor da passagem em R$: ");
-            while (getchar() != '\n'); // Limpa o buffer de entrada
-        }
+    while (scanf("%lf", &P.ValorPassagem) != 1)
+    {
+        printf("Digite apenas números para o valor.\n");
+        printf("Digite o valor da passagem em R$: ");
+        while (getchar() != '\n'); // Limpa o buffer de entrada
+    }
 
     return P;
 }
@@ -625,6 +654,11 @@ int Cadastro_de_Passagens()
                 puts("Numeros entre 1 e 31");
                 puts("Digite o dia da viagem");
             }
+
+            if(strlen(P.Data)==1)
+            {
+                sprintf(P.Data, "%02d", atoi(P.Data));
+            }
         }
         while (ApenasNumeros(P.Data) == 0 || atoi(P.Data) > 31 || atoi(P.Data) < 1);
 
@@ -648,6 +682,11 @@ int Cadastro_de_Passagens()
             {
                 puts("Mês deve estar entre 1 e 12");
                 puts("Digite o mes da viagem (dois digitos)");
+            }
+
+            if(strlen(P.Data+3) == 1)
+            {
+                sprintf(P.Data + 3, "%02d", atoi(P.Data + 3));
             }
 
         }
@@ -703,14 +742,13 @@ int Cadastro_de_Passagens()
                 puts("Digite a hora da partida");
             }
 
-            if (strlen(P.Hora_Partida) == 1) {
-            char temp[3];
-            sprintf(temp, "0%s", P.Hora_Partida);
-            strcpy(P.Hora_Partida, temp);
-        }
+            if (strlen(P.Hora_Partida) == 1)
+            {
+                sprintf(P.Hora_Partida, "%02d", atoi(P.Hora_Partida));
+            }
 
         }
-        while (ApenasNumeros(P.Hora_Partida) == 0 || atoi(P.Hora_Partida) > 23 || atoi(P.Hora_Partida) < 0);
+        while (ApenasNumeros(P.Hora_Partida) == 0 || atoi(P.Hora_Partida) > 23 || atoi(P.Hora_Partida) < 0 );
 
         P.Hora_Partida[2] = ':';
 
@@ -734,11 +772,10 @@ int Cadastro_de_Passagens()
                 puts("Digite os minutos");
             }
 
-            if (strlen(P.Hora_Partida+3) == 1) {
-            char temp[3];
-            sprintf(temp, "0%s", P.Hora_Partida);
-            strcpy(P.Hora_Partida, temp);
-        }
+            if (strlen(P.Hora_Partida + 3) == 1)
+            {
+                sprintf(P.Hora_Partida + 3, "%02d", atoi(P.Hora_Partida + 3));
+            }
         }
         while (ApenasNumeros(P.Hora_Partida + 3) == 0 || atoi(P.Hora_Partida + 3) > 59 || atoi(P.Hora_Partida + 3) < 0);
 
@@ -767,11 +804,11 @@ int Cadastro_de_Passagens()
                 puts("Digite uma hora válida");
                 puts("Digite a hora da Chegada");
             }
-            if (strlen(P.Hora_Chegada) == 1) {
-            char temp[3];
-            sprintf(temp, "0%s", P.Hora_Chegada);
-            strcpy(P.Hora_Chegada, temp);
-        }
+
+            if (strlen(P.Hora_Chegada) == 1)
+            {
+                sprintf(P.Hora_Chegada, "%02d", atoi(P.Hora_Chegada));
+            }
 
         }
         while (ApenasNumeros(P.Hora_Chegada) == 0 || atoi(P.Hora_Chegada) > 23 || atoi(P.Hora_Chegada) < 0);
@@ -797,6 +834,12 @@ int Cadastro_de_Passagens()
                 puts("Digite minutos validos");
                 puts("Digite os minutos");
             }
+
+            if (strlen(P.Hora_Chegada + 3) == 1)
+            {
+                sprintf(P.Hora_Chegada + 3, "%02d", atoi(P.Hora_Chegada + 3));
+            }
+
         }
         while (ApenasNumeros(P.Hora_Chegada + 3) == 0 || atoi(P.Hora_Chegada + 3) > 59 || atoi(P.Hora_Chegada + 3) < 0);
 
