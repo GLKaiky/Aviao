@@ -169,7 +169,8 @@ passagens Cad_Mod(int ID)
         {
             printf("Digite apenas 3 letras.\n");
         }
-    } while (ApenasLetras(P.codAeroporto_Origem) == 0 || verificarTam(P.codAeroporto_Origem, 3) == 0);
+    }
+    while (ApenasLetras(P.codAeroporto_Origem) == 0 || verificarTam(P.codAeroporto_Origem, 3) == 0);
 
     LetrasMaiusculas(P.codAeroporto_Origem);
 
@@ -192,7 +193,8 @@ passagens Cad_Mod(int ID)
             printf("Digite apenas 3 letras.\n");
         }
 
-    } while (ApenasLetras(P.codAeroporto_Destino) == 0 || verificarTam(P.codAeroporto_Destino, 3) == 0);
+    }
+    while (ApenasLetras(P.codAeroporto_Destino) == 0 || verificarTam(P.codAeroporto_Destino, 3) == 0);
 
     LetrasMaiusculas(P.codAeroporto_Destino);
 
@@ -208,7 +210,8 @@ passagens Cad_Mod(int ID)
         {
             printf("Nome da cidade pode conter apenas letras, sem caracteres ou numeros.\n");
         }
-    } while (ApenasLetras(P.CidadeOrigem) == 0);
+    }
+    while (ApenasLetras(P.CidadeOrigem) == 0);
 
     LetrasMaiusculas(P.CidadeOrigem);
 
@@ -224,7 +227,8 @@ passagens Cad_Mod(int ID)
         {
             printf("Nome da cidade pode conter apenas letras, sem caracteres ou numeros.\n");
         }
-    } while (ApenasLetras(P.CidadeDestino) == 0);
+    }
+    while (ApenasLetras(P.CidadeDestino) == 0);
 
     LetrasMaiusculas(P.CidadeDestino);
 
@@ -250,7 +254,8 @@ passagens Cad_Mod(int ID)
             puts("Numeros entre 1 e 31");
             puts("Digite o dia da viagem");
         }
-    } while (ApenasNumeros(P.Data) == 0 || atoi(P.Data) > 31 || atoi(P.Data) < 1);
+    }
+    while (ApenasNumeros(P.Data) == 0 || atoi(P.Data) > 31 || atoi(P.Data) < 1);
 
     P.Data[2] = '/';
 
@@ -274,7 +279,8 @@ passagens Cad_Mod(int ID)
             puts("Digite o mes da viagem (dois digitos)");
         }
 
-    } while (ApenasNumeros(P.Data + 3) == 0 || atoi(P.Data + 3) > 12 || atoi(P.Data) < 1);
+    }
+    while (ApenasNumeros(P.Data + 3) == 0 || atoi(P.Data + 3) > 12 || atoi(P.Data) < 1);
 
     P.Data[5] = '/';
 
@@ -297,7 +303,8 @@ passagens Cad_Mod(int ID)
             puts("Ano indisponivel ainda");
         }
 
-    } while (ApenasNumeros(P.Data + 6) == 0 || atoi(P.Data + 6) > 2050 || atoi(P.Data + 6) < 1000);
+    }
+    while (ApenasNumeros(P.Data + 6) == 0 || atoi(P.Data + 6) > 2050 || atoi(P.Data + 6) < 1000);
 
     // Hora da partida
 
@@ -323,7 +330,10 @@ passagens Cad_Mod(int ID)
             puts("Digite a hora da partida");
         }
 
-    } while (ApenasNumeros(P.Hora_Partida) == 0 || atoi(P.Hora_Partida) > 23 || atoi(P.Hora_Partida) < 0);
+
+
+    }
+    while (ApenasNumeros(P.Hora_Partida) == 0 || atoi(P.Hora_Partida) > 23 || atoi(P.Hora_Partida) < 0 );
 
     P.Hora_Partida[2] = ':';
 
@@ -346,7 +356,8 @@ passagens Cad_Mod(int ID)
             puts("Digite minutos validos");
             puts("Digite os minutos");
         }
-    } while (ApenasNumeros(P.Hora_Partida + 3) == 0 || atoi(P.Hora_Partida + 3) > 59 || atoi(P.Hora_Partida + 3) < 0);
+    }
+    while (ApenasNumeros(P.Hora_Partida + 3) == 0 || atoi(P.Hora_Partida + 3) > 59 || atoi(P.Hora_Partida + 3) < 0);
 
     // Hora da Chegada
 
@@ -372,7 +383,8 @@ passagens Cad_Mod(int ID)
             puts("Digite a hora da Chegada");
         }
 
-    } while (ApenasNumeros(P.Hora_Chegada) == 0 || atoi(P.Hora_Chegada) > 23 || atoi(P.Hora_Chegada) < 0);
+    }
+    while (ApenasNumeros(P.Hora_Chegada) == 0 || atoi(P.Hora_Chegada) > 23 || atoi(P.Hora_Chegada) < 0);
 
     P.Hora_Chegada[2] = ':';
 
@@ -395,20 +407,18 @@ passagens Cad_Mod(int ID)
             puts("Digite minutos validos");
             puts("Digite os minutos");
         }
-    } while (ApenasNumeros(P.Hora_Chegada + 3) == 0 || atoi(P.Hora_Chegada + 3) > 59 || atoi(P.Hora_Chegada + 3) < 0);
+    }
+    while (ApenasNumeros(P.Hora_Chegada + 3) == 0 || atoi(P.Hora_Chegada + 3) > 59 || atoi(P.Hora_Chegada + 3) < 0);
 
     // valor da passagem
     puts("Digite o valor da passagem em R$");
 
-    while (scanf("%lf", &P.ValorPassagem) != 1)
-    {
-        scanf("%lf", &P.ValorPassagem);
-        if (scanf("%lf", &P.ValorPassagem) == 0)
+        while (scanf("%lf", &P.ValorPassagem) != 1)
         {
-            puts("Digite apenas numeros para o valor");
-            puts("Digite o valor da passagem em R$");
+            printf("Digite apenas números para o valor.\n");
+            printf("Digite o valor da passagem em R$: ");
+            while (getchar() != '\n'); // Limpa o buffer de entrada
         }
-    }
 
     return P;
 }
@@ -457,7 +467,8 @@ int main()
             puts("Digite novamente:");
         }
 
-    } while (atoi(opcao) < 1 || atoi(opcao) > 6 || ApenasNumeros(opcao) == 0);
+    }
+    while (atoi(opcao) < 1 || atoi(opcao) > 6 || ApenasNumeros(opcao) == 0);
 
     int opcao1 = atoi(opcao);
 
@@ -502,7 +513,8 @@ int Cadastro_de_Passagens()
         {
             P.ID++;
         }
-    } while (P.ID <= Y);
+    }
+    while (P.ID <= Y);
 
     // Codigo de Aeroporto de Origem
     do
@@ -524,7 +536,8 @@ int Cadastro_de_Passagens()
             {
                 printf("Digite apenas 3 letras.\n");
             }
-        } while (ApenasLetras(P.codAeroporto_Origem) == 0 || verificarTam(P.codAeroporto_Origem, 3) == 0);
+        }
+        while (ApenasLetras(P.codAeroporto_Origem) == 0 || verificarTam(P.codAeroporto_Origem, 3) == 0);
 
         LetrasMaiusculas(P.codAeroporto_Origem);
         fprintf(arquivo, "%s;", P.codAeroporto_Origem);
@@ -548,7 +561,8 @@ int Cadastro_de_Passagens()
                 printf("Digite apenas 3 letras.\n");
             }
 
-        } while (ApenasLetras(P.codAeroporto_Destino) == 0 || verificarTam(P.codAeroporto_Destino, 3) == 0);
+        }
+        while (ApenasLetras(P.codAeroporto_Destino) == 0 || verificarTam(P.codAeroporto_Destino, 3) == 0);
 
         LetrasMaiusculas(P.codAeroporto_Destino);
         fprintf(arquivo, "%s;", P.codAeroporto_Destino);
@@ -565,7 +579,8 @@ int Cadastro_de_Passagens()
             {
                 printf("Nome da cidade pode conter apenas letras, sem caracteres ou numeros.\n");
             }
-        } while (ApenasLetras(P.CidadeOrigem) == 0);
+        }
+        while (ApenasLetras(P.CidadeOrigem) == 0);
 
         LetrasMaiusculas(P.CidadeOrigem);
         fprintf(arquivo, "%s;", P.CidadeOrigem);
@@ -582,7 +597,8 @@ int Cadastro_de_Passagens()
             {
                 printf("Nome da cidade pode conter apenas letras, sem caracteres ou numeros.\n");
             }
-        } while (ApenasLetras(P.CidadeDestino) == 0);
+        }
+        while (ApenasLetras(P.CidadeDestino) == 0);
 
         LetrasMaiusculas(P.CidadeDestino);
         fprintf(arquivo, "%s;", P.CidadeDestino);
@@ -609,7 +625,8 @@ int Cadastro_de_Passagens()
                 puts("Numeros entre 1 e 31");
                 puts("Digite o dia da viagem");
             }
-        } while (ApenasNumeros(P.Data) == 0 || atoi(P.Data) > 31 || atoi(P.Data) < 1);
+        }
+        while (ApenasNumeros(P.Data) == 0 || atoi(P.Data) > 31 || atoi(P.Data) < 1);
 
         P.Data[2] = '/';
 
@@ -633,7 +650,8 @@ int Cadastro_de_Passagens()
                 puts("Digite o mes da viagem (dois digitos)");
             }
 
-        } while (ApenasNumeros(P.Data + 3) == 0 || atoi(P.Data + 3) > 12 || atoi(P.Data) < 1);
+        }
+        while (ApenasNumeros(P.Data + 3) == 0 || atoi(P.Data + 3) > 12 || atoi(P.Data) < 1);
 
         P.Data[5] = '/';
 
@@ -656,7 +674,8 @@ int Cadastro_de_Passagens()
                 puts("Ano indisponivel ainda");
             }
 
-        } while (ApenasNumeros(P.Data + 6) == 0 || atoi(P.Data + 6) > 2050 || atoi(P.Data + 6) < 1000);
+        }
+        while (ApenasNumeros(P.Data + 6) == 0 || atoi(P.Data + 6) > 2050 || atoi(P.Data + 6) < 1000);
 
         fprintf(arquivo, "%s;", P.Data);
 
@@ -684,7 +703,14 @@ int Cadastro_de_Passagens()
                 puts("Digite a hora da partida");
             }
 
-        } while (ApenasNumeros(P.Hora_Partida) == 0 || atoi(P.Hora_Partida) > 23 || atoi(P.Hora_Partida) < 0);
+            if (strlen(P.Hora_Partida) == 1) {
+            char temp[3];
+            sprintf(temp, "0%s", P.Hora_Partida);
+            strcpy(P.Hora_Partida, temp);
+        }
+
+        }
+        while (ApenasNumeros(P.Hora_Partida) == 0 || atoi(P.Hora_Partida) > 23 || atoi(P.Hora_Partida) < 0);
 
         P.Hora_Partida[2] = ':';
 
@@ -707,7 +733,14 @@ int Cadastro_de_Passagens()
                 puts("Digite minutos validos");
                 puts("Digite os minutos");
             }
-        } while (ApenasNumeros(P.Hora_Partida + 3) == 0 || atoi(P.Hora_Partida + 3) > 59 || atoi(P.Hora_Partida + 3) < 0);
+
+            if (strlen(P.Hora_Partida+3) == 1) {
+            char temp[3];
+            sprintf(temp, "0%s", P.Hora_Partida);
+            strcpy(P.Hora_Partida, temp);
+        }
+        }
+        while (ApenasNumeros(P.Hora_Partida + 3) == 0 || atoi(P.Hora_Partida + 3) > 59 || atoi(P.Hora_Partida + 3) < 0);
 
         fprintf(arquivo, "%s;", P.Hora_Partida);
 
@@ -734,8 +767,14 @@ int Cadastro_de_Passagens()
                 puts("Digite uma hora válida");
                 puts("Digite a hora da Chegada");
             }
+            if (strlen(P.Hora_Chegada) == 1) {
+            char temp[3];
+            sprintf(temp, "0%s", P.Hora_Chegada);
+            strcpy(P.Hora_Chegada, temp);
+        }
 
-        } while (ApenasNumeros(P.Hora_Chegada) == 0 || atoi(P.Hora_Chegada) > 23 || atoi(P.Hora_Chegada) < 0);
+        }
+        while (ApenasNumeros(P.Hora_Chegada) == 0 || atoi(P.Hora_Chegada) > 23 || atoi(P.Hora_Chegada) < 0);
 
         P.Hora_Chegada[2] = ':';
 
@@ -758,18 +797,20 @@ int Cadastro_de_Passagens()
                 puts("Digite minutos validos");
                 puts("Digite os minutos");
             }
-        } while (ApenasNumeros(P.Hora_Chegada + 3) == 0 || atoi(P.Hora_Chegada + 3) > 59 || atoi(P.Hora_Chegada + 3) < 0);
+        }
+        while (ApenasNumeros(P.Hora_Chegada + 3) == 0 || atoi(P.Hora_Chegada + 3) > 59 || atoi(P.Hora_Chegada + 3) < 0);
 
         fprintf(arquivo, "%s;", P.Hora_Chegada);
 
         // valor da passagem
         puts("Digite o valor da passagem em R$");
 
-        while (scanf("%lf", &P.ValorPassagem) != 1) {
-        printf("Digite apenas números para o valor.\n");
-        printf("Digite o valor da passagem em R$: ");
-        while (getchar() != '\n'); // Limpa o buffer de entrada
-    }
+        while (scanf("%lf", &P.ValorPassagem) != 1)
+        {
+            printf("Digite apenas números para o valor.\n");
+            printf("Digite o valor da passagem em R$: ");
+            while (getchar() != '\n'); // Limpa o buffer de entrada
+        }
         fprintf(arquivo, "R$%.2lf", P.ValorPassagem);
         fprintf(arquivo, "\n");
 
@@ -783,7 +824,8 @@ int Cadastro_de_Passagens()
 
         getchar();
         P.ID++;
-    } while (strcmp(parada, "SIM") == 0);
+    }
+    while (strcmp(parada, "SIM") == 0);
     fclose(arquivo);
 
     puts("Voltando ao menu");
@@ -822,7 +864,8 @@ int Listar_Passagens()
     while (fgets(linhas, sizeof(linhas), arquivo) != NULL)
     {
         if (linhaAtual != 1)
-        { // Ignora a segunda linha (linhaAtual == 1)
+        {
+            // Ignora a segunda linha (linhaAtual == 1)
             printf("%s", linhas);
         }
         linhaAtual++;
@@ -890,7 +933,8 @@ void Excluir()
             puts("Não encontrado, tente novamente");
         }
 
-    } while (verificador == 0);
+    }
+    while (verificador == 0);
 
     char SN[4];
     getchar();
@@ -911,7 +955,8 @@ void Excluir()
         {
             puts("Apenas Sim ou Nao");
         }
-    } while (strcmp(SN, "SIM") != 0);
+    }
+    while (strcmp(SN, "SIM") != 0);
 
     FILE *arquivoEscrita = fopen("passagens.txt", "w");
 
@@ -997,7 +1042,8 @@ void Editar()
         {
             puts("Nao encontrado, tente novamente");
         }
-    } while (verificador == 0);
+    }
+    while (verificador == 0);
 
     FILE *arquivoEscrita = fopen("passagens.txt", "w");
 
@@ -1124,7 +1170,8 @@ void pesquisar()
                         break;
                     }
 
-                } while (strcmp(SN, "NAO") != 0);
+                }
+                while (strcmp(SN, "NAO") != 0);
             }
             else if (verificar == 1)
             {
@@ -1152,10 +1199,12 @@ void pesquisar()
                         break;
                     }
 
-                } while (strcmp(SN, "NAO") != 0);
+                }
+                while (strcmp(SN, "NAO") != 0);
             }
 
-        } while (strcmp(SN, "SIM") == 0);
+        }
+        while (strcmp(SN, "SIM") == 0);
 
         break;
 
@@ -1181,7 +1230,8 @@ void pesquisar()
                 {
                     printf("Digite apenas 3 letras.\n");
                 }
-            } while (ApenasLetras(G.codAeroporto_Origem) == 0 || verificarTam(G.codAeroporto_Origem, 3) == 0);
+            }
+            while (ApenasLetras(G.codAeroporto_Origem) == 0 || verificarTam(G.codAeroporto_Origem, 3) == 0);
 
             LetrasMaiusculas(G.codAeroporto_Origem);
 
@@ -1229,7 +1279,8 @@ void pesquisar()
 
                     teste = linhas;
 
-                } while (strcmp(SN, "NAO") != 0);
+                }
+                while (strcmp(SN, "NAO") != 0);
             }
             else
             {
@@ -1254,11 +1305,13 @@ void pesquisar()
                         break;
                     }
 
-                } while (strcmp(SN, "NAO") != 0);
+                }
+                while (strcmp(SN, "NAO") != 0);
             }
 
             teste = linhas;
-        } while (strcmp(SN, "SIM") == 0);
+        }
+        while (strcmp(SN, "SIM") == 0);
 
         break;
 
@@ -1284,7 +1337,8 @@ void pesquisar()
                     printf("Digite apenas 3 letras.\n");
                 }
 
-            } while (ApenasLetras(G.codAeroporto_Destino) == 0 || verificarTam(G.codAeroporto_Destino, 3) == 0);
+            }
+            while (ApenasLetras(G.codAeroporto_Destino) == 0 || verificarTam(G.codAeroporto_Destino, 3) == 0);
 
             LetrasMaiusculas(G.codAeroporto_Destino);
             fprintf(arquivo, "%s;", G.codAeroporto_Destino);
@@ -1335,7 +1389,8 @@ void pesquisar()
 
                     teste = linhas;
 
-                } while (strcmp(SN, "NAO") != 0);
+                }
+                while (strcmp(SN, "NAO") != 0);
             }
             else
             {
@@ -1360,15 +1415,17 @@ void pesquisar()
                         break;
                     }
 
-                } while (strcmp(SN, "NAO") != 0);
+                }
+                while (strcmp(SN, "NAO") != 0);
             }
 
             teste = linhas;
-        } while (strcmp(SN, "SIM") == 0);
+        }
+        while (strcmp(SN, "SIM") == 0);
 
         break;
 
-        // Pesquisa por cidade de origem
+    // Pesquisa por cidade de origem
 
     case 4:
         getchar();
@@ -1385,7 +1442,8 @@ void pesquisar()
                 {
                     printf("Nome da cidade pode conter apenas letras, sem caracteres ou numeros.\n");
                 }
-            } while (ApenasLetras(G.CidadeOrigem) == 0);
+            }
+            while (ApenasLetras(G.CidadeOrigem) == 0);
 
             LetrasMaiusculas(G.CidadeOrigem);
             fprintf(arquivo, "%s;", G.CidadeOrigem);
@@ -1436,7 +1494,8 @@ void pesquisar()
 
                     teste = linhas;
 
-                } while (strcmp(SN, "NAO") != 0);
+                }
+                while (strcmp(SN, "NAO") != 0);
             }
             else
             {
@@ -1461,15 +1520,17 @@ void pesquisar()
                         break;
                     }
 
-                } while (strcmp(SN, "NAO") != 0);
+                }
+                while (strcmp(SN, "NAO") != 0);
             }
 
             teste = linhas;
-        } while (strcmp(SN, "SIM") == 0);
+        }
+        while (strcmp(SN, "SIM") == 0);
 
         break;
 
-        // Pesquisa por cidade de destino
+    // Pesquisa por cidade de destino
 
     case 5:
         getchar();
@@ -1486,7 +1547,8 @@ void pesquisar()
                 {
                     printf("Nome da cidade pode conter apenas letras, sem caracteres ou numeros.\n");
                 }
-            } while (ApenasLetras(G.CidadeDestino) == 0);
+            }
+            while (ApenasLetras(G.CidadeDestino) == 0);
 
             LetrasMaiusculas(G.CidadeDestino);
             fprintf(arquivo, "%s;", G.CidadeDestino);
@@ -1537,7 +1599,8 @@ void pesquisar()
 
                     teste = linhas;
 
-                } while (strcmp(SN, "NAO") != 0);
+                }
+                while (strcmp(SN, "NAO") != 0);
             }
             else
             {
@@ -1562,11 +1625,13 @@ void pesquisar()
                         break;
                     }
 
-                } while (strcmp(SN, "NAO") != 0);
+                }
+                while (strcmp(SN, "NAO") != 0);
             }
 
             teste = linhas;
-        } while (strcmp(SN, "SIM") == 0);
+        }
+        while (strcmp(SN, "SIM") == 0);
 
         break;
     }
