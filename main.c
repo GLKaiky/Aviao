@@ -1,161 +1,29 @@
+//Bibliotecas inclusas e utilizadas
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "wallison.h"
 
+//Menção das Funções
 int Listar_Passagens();
 int Cadastro_de_Passagens();
 void pesquisar();
+void Editar();
 void Excluir();
 
-// Struct de passagens
-typedef struct passagens
-{
-    char codAeroporto_Origem[100];
-    char codAeroporto_Destino[100];
-    char CidadeOrigem[100];
-    char CidadeDestino[100];
-    char Data[15];
-    char Hora_Partida[100];
-    char Hora_Chegada[100];
-    double ValorPassagem;
-    int ID;
 
-} passagens;
-// Fim Struct
-
-// Fun��es Uteis
-
-// Verificar tamanho com retorno
-
-int verificarTam(char str[], int tam)
-{
-    int A = strlen(str);
-    if (A > tam || A < tam)
-    {
-        return 0;
-    }
-    else
-    {
-        return 1;
-    }
-}
-
-// Deixar letras maiusculas
-void LetrasMaiusculas(char str[])
-{
-    for (int i = 0; i < strlen(str); i++)
-    {
-        str[i] = toupper(str[i]);
-    }
-}
-
-// Tirar \n da String
-void TiraN(char str[])
-{
-    int A = strlen(str);
-    str[A - 1] = '\0';
-}
-
-// contar linhas do arquivo
-
-int ContaLinha()
-{
-    FILE *arquivo = fopen("passagens.txt", "r");
-
-    int linhas = 0;
-
-    char caractere;
-    while ((caractere = fgetc(arquivo)) != EOF)
-    {
-        if (caractere == '\n')
-        {
-            linhas++;
-        }
-    }
-
-    fclose(arquivo);
-
-    return linhas;
-}
-// Ultimo ID
-int UltimoID()
-{
-    FILE *arquivo = fopen("passagens.txt", "r");
-    if (arquivo == NULL)
-    {
-        printf("Erro ao abrir o arquivo.\n");
-        return -1; // Retorna um valor indicando erro
-    }
-
-    int quantidadedelinhas;
-    fscanf(arquivo, "%d", &quantidadedelinhas);
-
-    if (quantidadedelinhas == 0)
-    {
-        fclose(arquivo);
-        return 0; // Retorna 0 se não houver passagens registradas
-    }
-
-    int ultimoID = 0; // Define um valor inicial para o último ID
-
-    // Busca o último ID percorrendo o arquivo até o final
-    while (!feof(arquivo))
-    {
-        passagens P;
-        fscanf(arquivo, " %d;%*[^;];%*[^;];%*[^;];%*[^;];%*[^;];%*[^;];%*[^;];R$%*lf", &P.ID);
-        ultimoID = P.ID; // Atualiza o último ID encontrado
-    }
-
-    fclose(arquivo);
-    return ultimoID;
-}
-// limitar tamanho da string
-void limitarTamanho(char *str, int tamanho)
-{
-    if (strlen(str) > tamanho)
-    {
-        str[tamanho] = '\0'; // Adiciona um terminador para cortar a string no tamanho desejado
-    }
-}
-
-// Filtro
-
-int ApenasLetras(char *str)
-{
-    while (*str)
-    {
-        if (!isalpha(*str))
-        {
-            return 0; // Cont�m caracteres que n�o s�o letras
-        }
-        str++;
-    }
-    return 1; // Cont�m apenas letras
-}
-
-int ApenasNumeros(char *str)
-
-{
-    while (*str)
-    {
-        if (!isdigit(*str))
-        {
-            return 0;
-        }
-        str++;
-    }
-    return 1;
-}
-
+//Função do tipo passagens responsavel por preencher a struct e editar o arquivo
 passagens Cad_Mod(int ID)
 {
-    passagens P;
+    getchar();//Limpar o buffer
+    passagens P;//Chamar struct
 
-    P.ID = ID;
+    P.ID = ID;//Receber o parametro ID passado na função de edição
+
+    //Registro do codigo de aeroporto
     do
     {
-        getchar();
         puts("Digite o Codigo do Areoporto de Origem (apenas letras)");
         fgets(P.codAeroporto_Origem, 100, stdin);
         TiraN(P.codAeroporto_Origem);
@@ -170,11 +38,11 @@ passagens Cad_Mod(int ID)
             printf("Digite apenas 3 letras.\n");
         }
     }
-    while (ApenasLetras(P.codAeroporto_Origem) == 0 || verificarTam(P.codAeroporto_Origem, 3) == 0);
+    while (ApenasLetras(P.codAeroporto_Origem) == 0 || verificarTam(P.codAeroporto_Origem, 3) == 0);//Condições
 
     LetrasMaiusculas(P.codAeroporto_Origem);
 
-    // Cod do Aeroporto de Destino
+    // Registro do Codigo do Aeroporto de Destino
 
     do
     {
@@ -194,11 +62,11 @@ passagens Cad_Mod(int ID)
         }
 
     }
-    while (ApenasLetras(P.codAeroporto_Destino) == 0 || verificarTam(P.codAeroporto_Destino, 3) == 0);
+    while (ApenasLetras(P.codAeroporto_Destino) == 0 || verificarTam(P.codAeroporto_Destino, 3) == 0);//Condições
 
     LetrasMaiusculas(P.codAeroporto_Destino);
 
-    // Cidade de Origem
+    //Cadastro da Cidade de Origem
 
     do
     {
@@ -211,11 +79,11 @@ passagens Cad_Mod(int ID)
             printf("Nome da cidade pode conter apenas letras, sem caracteres ou numeros.\n");
         }
     }
-    while (ApenasLetras(P.CidadeOrigem) == 0);
+    while (ApenasLetras(P.CidadeOrigem) == 0);//Condições
 
     LetrasMaiusculas(P.CidadeOrigem);
 
-    // Cidade de Destino
+    //Cadastro da Cidade de Destino
 
     do
     {
@@ -228,11 +96,11 @@ passagens Cad_Mod(int ID)
             printf("Nome da cidade pode conter apenas letras, sem caracteres ou numeros.\n");
         }
     }
-    while (ApenasLetras(P.CidadeDestino) == 0);
+    while (ApenasLetras(P.CidadeDestino) == 0);//Condições
 
     LetrasMaiusculas(P.CidadeDestino);
 
-    // Data
+    //Cadastro da Data
 
     puts("Digite a data, sera registrada no formado dd/mm/YYYY");
     puts("Digite o dia da viagem");
@@ -247,9 +115,9 @@ passagens Cad_Mod(int ID)
             puts("Digite o dia da viagem");
         }
 
-        int A = atoi(P.Data);
+        int A = atoi(P.Data);//Converte strings em numeros inteiros
 
-        if (A > 31 || A < 1)
+        if (A > 31 || A < 1)//Verifica se o dia está entre 1 e 31
         {
             puts("Numeros entre 1 e 31");
             puts("Digite o dia da viagem");
@@ -257,28 +125,28 @@ passagens Cad_Mod(int ID)
 
         if(strlen(P.Data)==1)
         {
-            sprintf(P.Data, "%02d", atoi(P.Data));
+            sprintf(P.Data, "%02d", atoi(P.Data));//Formatação para caso seja digitado apenas um digito como 1,2,3...seja adicionado um 0 para ficar 01,02,03
         }
     }
-    while (ApenasNumeros(P.Data) == 0 || atoi(P.Data) > 31 || atoi(P.Data) < 1);
+    while (ApenasNumeros(P.Data) == 0 || atoi(P.Data) > 31 || atoi(P.Data) < 1);//Condições
 
-    P.Data[2] = '/';
+    P.Data[2] = '/';//Adiciona uma barra na segunda posição da string de Data para formatação
 
     puts("Digite o mês da viagem (dois digitos): ");
     do
     {
 
         fgets(P.Data + 3, 10, stdin); // Lê dois dígitos para o mês
-        TiraN(P.Data + 3);
+        TiraN(P.Data + 3); // +3 para avançar no array da string
 
-        if (ApenasNumeros(P.Data + 3) == 0)
+        if (ApenasNumeros(P.Data + 3) == 0)//Filtro para ter apenas numeros
         {
             puts("Digite apenas numeros");
             puts("Digite o mes da viagem");
         }
 
         int mes = atoi(P.Data + 3);
-        if (mes > 12 || mes < 1)
+        if (mes > 12 || mes < 1)//Limita o mes entre 1 e 12
         {
             puts("Mês deve estar entre 1 e 12");
             puts("Digite o mes da viagem (dois digitos)");
@@ -286,13 +154,13 @@ passagens Cad_Mod(int ID)
 
         if(strlen(P.Data+3) == 1)
         {
-            sprintf(P.Data + 3, "%02d", atoi(P.Data + 3));
+            sprintf(P.Data + 3, "%02d", atoi(P.Data + 3));//Formatação para caso seja digitado apenas um digito como 1,2,3...seja adicionado um 0 para ficar 01,02,03
         }
 
     }
-    while (ApenasNumeros(P.Data + 3) == 0 || atoi(P.Data + 3) > 12 || atoi(P.Data) < 1);
+    while (ApenasNumeros(P.Data + 3) == 0 || atoi(P.Data + 3) > 12 || atoi(P.Data) < 1);//Condições
 
-    P.Data[5] = '/';
+    P.Data[5] = '/';//Barra para proxima data
 
     puts("Digite o ano da viagem (quatro dígitos): ");
     do
@@ -308,15 +176,17 @@ passagens Cad_Mod(int ID)
         }
 
         int ano = atoi(P.Data + 6);
-        if (ano > 2050)
+        if (ano > 2050)//Verificar se o ano é valido
         {
             puts("Ano indisponivel ainda");
+        }else if(ano < 1000){
+            puts("4 Digitos");
         }
 
     }
-    while (ApenasNumeros(P.Data + 6) == 0 || atoi(P.Data + 6) > 2050 || atoi(P.Data + 6) < 1000);
+    while (ApenasNumeros(P.Data + 6) == 0 || atoi(P.Data + 6) > 2050 || atoi(P.Data + 6) < 1000);//Condições
 
-    // Hora da partida
+    //Registro Hora da partida
 
     puts("Digite a Hora da partida (sera escrito HH:mm)");
 
@@ -333,7 +203,7 @@ passagens Cad_Mod(int ID)
             puts("Digite a Hora da partida");
         }
 
-        int hr = atoi(P.Hora_Partida);
+        int hr = atoi(P.Hora_Partida);//Transformar string em numero inteiro
         if (hr > 23 || hr < 0)
         {
             puts("Digite uma hora válida");
@@ -342,19 +212,19 @@ passagens Cad_Mod(int ID)
 
         if (strlen(P.Hora_Partida) == 1)
         {
-            sprintf(P.Hora_Partida, "%02d", atoi(P.Hora_Partida));
+            sprintf(P.Hora_Partida, "%02d", atoi(P.Hora_Partida));//Formatação para caso seja digitado apenas um digito como 1,2,3...seja adicionado um 0 para ficar 01,02,03
         }
 
     }
-    while (ApenasNumeros(P.Hora_Partida) == 0 || atoi(P.Hora_Partida) > 23 || atoi(P.Hora_Partida) < 0 );
+    while (ApenasNumeros(P.Hora_Partida) == 0 || atoi(P.Hora_Partida) > 23 || atoi(P.Hora_Partida) < 0 );//Condições
 
-    P.Hora_Partida[2] = ':';
+    P.Hora_Partida[2] = ':';//Adiciona 2 pontos após as horas digitadas
 
     puts("Digite os minutos");
     do
     {
 
-        fgets(P.Hora_Partida + 3, 5, stdin);
+        fgets(P.Hora_Partida + 3, 5, stdin);//Avança e lê o array na posição vazia
         TiraN(P.Hora_Partida + 3);
 
         if (ApenasNumeros(P.Hora_Partida + 3) == 0)
@@ -372,12 +242,12 @@ passagens Cad_Mod(int ID)
 
         if (strlen(P.Hora_Partida + 3) == 1)
         {
-            sprintf(P.Hora_Partida + 3, "%02d", atoi(P.Hora_Partida + 3));
+            sprintf(P.Hora_Partida + 3, "%02d", atoi(P.Hora_Partida + 3));//Formatação para caso seja digitado apenas um digito como 1,2,3...seja adicionado um 0 para ficar 01,02,03
         }
     }
-    while (ApenasNumeros(P.Hora_Partida + 3) == 0 || atoi(P.Hora_Partida + 3) > 59 || atoi(P.Hora_Partida + 3) < 0);
+    while (ApenasNumeros(P.Hora_Partida + 3) == 0 || atoi(P.Hora_Partida + 3) > 59 || atoi(P.Hora_Partida + 3) < 0);//Condições
 
-    // Hora da Chegada
+    //Registro Hora da Chegada
 
     puts("Digite a Hora da Chegada (sera escrito hh:mm)");
 
@@ -395,7 +265,7 @@ passagens Cad_Mod(int ID)
         }
 
         int hr = atoi(P.Hora_Chegada);
-        if (hr > 23 || hr < 0)
+        if (hr > 23 || hr < 0)//Limita a horas digitadas entre 00 e 23 no padrão 24 horas
         {
             puts("Digite uma hora válida");
             puts("Digite a hora da Chegada");
@@ -403,19 +273,19 @@ passagens Cad_Mod(int ID)
 
         if (strlen(P.Hora_Chegada) == 1)
         {
-            sprintf(P.Hora_Chegada, "%02d", atoi(P.Hora_Chegada));
+            sprintf(P.Hora_Chegada, "%02d", atoi(P.Hora_Chegada));//Formatação para caso seja digitado apenas um digito como 1,2,3...seja adicionado um 0 para ficar 01,02,03
         }
 
     }
-    while (ApenasNumeros(P.Hora_Chegada) == 0 || atoi(P.Hora_Chegada) > 23 || atoi(P.Hora_Chegada) < 0);
+    while (ApenasNumeros(P.Hora_Chegada) == 0 || atoi(P.Hora_Chegada) > 23 || atoi(P.Hora_Chegada) < 0);//Condições
 
-    P.Hora_Chegada[2] = ':';
+    P.Hora_Chegada[2] = ':';//Dois pontos apos o registro das horas
 
     puts("Digite os minutos");
     do
     {
 
-        fgets(P.Hora_Chegada + 3, 5, stdin);
+        fgets(P.Hora_Chegada + 3, 5, stdin);//Avança para a posição disponivel do array
         TiraN(P.Hora_Chegada + 3);
 
         if (ApenasNumeros(P.Hora_Chegada + 3) == 0)
@@ -425,7 +295,7 @@ passagens Cad_Mod(int ID)
         }
 
         int hr = atoi(P.Hora_Chegada + 3);
-        if (hr > 59 || hr < 0)
+        if (hr > 59 || hr < 0)//Limita minutos a 0 e 59 minutos
         {
             puts("Digite minutos validos");
             puts("Digite os minutos");
@@ -439,41 +309,41 @@ passagens Cad_Mod(int ID)
     }
     while (ApenasNumeros(P.Hora_Chegada + 3) == 0 || atoi(P.Hora_Chegada + 3) > 59 || atoi(P.Hora_Chegada + 3) < 0);
 
-    // valor da passagem
+    //Registro valor da passagem
     puts("Digite o valor da passagem em R$");
 
-    while (scanf("%lf", &P.ValorPassagem) != 1)
+    while (scanf("%lf", &P.ValorPassagem) != 1)//Limitador para que seja digitados apenas numeros
     {
         printf("Digite apenas números para o valor.\n");
         printf("Digite o valor da passagem em R$: ");
         while (getchar() != '\n'); // Limpa o buffer de entrada
     }
 
-    return P;
+    return P;//Retorna a struct foramtada para a função Editar
 }
 
 int main()
 {
 
-    FILE *arquivo = fopen("passagens.txt", "r+");
-    int linha = ContaLinha() - 2;
+    FILE *arquivo = fopen("passagens.txt", "r+");//Abre o arquivo para leitura e escrita
+    int linha = ContaLinha() - 2;//Recebe as linhas contadas para a quantidade de passagens registradas desprezando as 2 primeiras linhas
     if (linha < 0)
     {
-        linha = 0;
+        linha = 0;//Caso nao tenha registros linha será impressa com 0
     }
 
-    printf("%d\n", linha);
-    fseek(arquivo, 0, SEEK_SET);
-    fprintf(arquivo, "%d\n", linha);
-    fclose(arquivo);
+    printf("%d\n", linha);//Imprime no topo do programa
+    fseek(arquivo, 0, SEEK_SET);//Move o ponteiro do arquivo para a primeira linha
+    fprintf(arquivo, "%d\n", linha);//Imprime a quantidade de passagens
+    fclose(arquivo);//Fecha o arquivo
 
-    arquivo = fopen("passagens.txt", "r+");
+    arquivo = fopen("passagens.txt", "r+");//Abre novamente para o registro do ID
     int A = UltimoID();
-    fseek(arquivo, 3, SEEK_SET);
-    fprintf(arquivo, "%d\n", A);
-    fclose(arquivo);
+    fseek(arquivo, 3, SEEK_SET);//Move o ponteiro do arquivo para a segunda linha
+    fprintf(arquivo, "%d\n", A);//Imprime o id
+    fclose(arquivo);//Fechar o arquivo
 
-    char opcao[100];
+    char opcao[100];//String de opção grande para tratamento de erros de digitação
 
     printf("Cadastro de Passagens, bem vindo\n");
     puts("Selecione uma opcao para prosseguir:");
@@ -490,51 +360,52 @@ int main()
         fgets(opcao, sizeof(opcao), stdin);
         TiraN(opcao);
 
-        if (atoi(opcao) < 1 || atoi(opcao) > 6 || ApenasNumeros(opcao) == 0)
+        if (atoi(opcao) < 1 || atoi(opcao) > 6 || ApenasNumeros(opcao) == 0)//Atoi transforma Strings em Numeros
         {
             puts("Apenas as opcoes de 1 a 6");
             puts("Digite novamente:");
         }
 
     }
-    while (atoi(opcao) < 1 || atoi(opcao) > 6 || ApenasNumeros(opcao) == 0);
+    while (atoi(opcao) < 1 || atoi(opcao) > 6 || ApenasNumeros(opcao) == 0);//Condições para ser digitado apenas numeros entre 1 e 6
 
-    int opcao1 = atoi(opcao);
+    int opcao1 = atoi(opcao);// Opção 1 recebe um inteiro da string opcao
 
-    switch (opcao1)
+    switch (opcao1)//Menu de opções
     {
     case 1:
-        Listar_Passagens();
+        Listar_Passagens();//Listagem de passagens
         break;
     case 2:
-        pesquisar();
+        pesquisar();//Pesquisa de passagens
         break;
     case 3:
-        Cadastro_de_Passagens();
+        Cadastro_de_Passagens();//Cadastro de passagens
         break;
     case 4:
-        Editar();
+        Editar();//Edicao de passagens
         break;
     case 5:
-        Excluir();
+        Excluir();//Excluir passagens
         break;
     case 6:
         puts("Finalizando...");
-        exit(0);
+        exit(0);//Sair do programa
         break;
     }
 }
 
-int Cadastro_de_Passagens()
+int Cadastro_de_Passagens()//Cadastro de passagens
 {
 
-    char parada[3];
+    char parada[3];//Condição de parada para repetição da função no final
 
-    passagens P;
-    FILE *arquivo = fopen("passagens.txt", "a");
+    passagens P;//Chamada da struct
+    FILE *arquivo = fopen("passagens.txt", "a");//Abertura do arquivo para escrita sem apagar o que foi escrito
 
-    P.ID = ContaLinha() - 1;
-    int Y = UltimoID();
+    P.ID = ContaLinha() - 1;//Id contado a partir da subtração de 1 linha para sempre contar linearmente 1,2,3,4,5...
+
+    int Y = UltimoID();//Condição para evitar erros com o ultimo ID e o ID ser ignorado
 
     do
     {
@@ -875,21 +746,7 @@ int Cadastro_de_Passagens()
     main();
 }
 
-int Listar_Passagens2()
-{
-    FILE *arquivo = fopen("passagens.txt", "r");
 
-    char linhas[1000];
-
-    puts("---------------------------------------------------------");
-    while (fgets(linhas, sizeof(linhas), arquivo) != NULL)
-    {
-        printf("%s", linhas);
-    }
-    puts("---------------------------------------------------------");
-
-    fclose(arquivo);
-}
 
 int Listar_Passagens()
 {
@@ -921,14 +778,14 @@ int Listar_Passagens()
 
 void Excluir()
 {
-    FILE *arquivo = fopen("passagens.txt", "r");
+    FILE *arquivo = fopen("passagens.txt", "r");//Abertura do arquivo para leitura
 
     int quantidadeLinhas = 0;
     int ultimoID = 0;
     fscanf(arquivo, "%d", &quantidadeLinhas); // Lendo o primeiro numero do arquivo
     fscanf(arquivo, "%d", &ultimoID);         // Lê o ID da última passagem
 
-    if (quantidadeLinhas <= 0 || ultimoID <= 0)
+    if (quantidadeLinhas <= 0 || ultimoID <= 0)//Verificar se o arquivo esta preenchido
     {
         printf("Arquivo vazio ou mal formatado.\n");
         fclose(arquivo);
@@ -936,7 +793,7 @@ void Excluir()
         printf("\n");
     }
 
-    passagens P[quantidadeLinhas];
+    passagens P[quantidadeLinhas];//Chamada da struct
     int indice = 0;
 
     while (fscanf(arquivo, "%d;%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];R$%lf\n", &P[indice].ID,
@@ -945,33 +802,33 @@ void Excluir()
                   P[indice].Hora_Partida, P[indice].Hora_Chegada, &P[indice].ValorPassagem) == 9)
     {
         indice++;
-    }
+    }//Registro dos elementos do arquivo na struct respectivamente
 
-    fclose(arquivo);
+    fclose(arquivo);//Fechar o arquivo
 
-    int idExcluir;
+    int idExcluir;//Variavel para listar o ID de exclusão
 
-    Listar_Passagens2();
+    Listar_Passagens2();//Listar as passagens disponiveis
 
-    int verificador = 0;
+    int verificador = 0;//Verificador para ver a existencia da passagem
     do
     {
         printf("Digite o ID da passagem que deseja excluir: ");
-        scanf("%d", &idExcluir);
+        scanf("%d", &idExcluir);//Registra o id que deseja excluir
 
-        for (int i = 0; i < quantidadeLinhas; i++)
+        for (int i = 0; i < quantidadeLinhas; i++)//Procurar pelo id para mostrar qual foi encontrado
         {
             if (P[i].ID == idExcluir)
             {
                 puts("Encontrado");
-                verificador = 1;
+                verificador = 1;//modifica verificador
                 printf("%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i].ID,
                        P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
                        P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
                        P[i].Hora_Partida, P[i].Hora_Chegada, P[i].ValorPassagem);
             }
         }
-        if (verificador == 0)
+        if (verificador == 0)//Caso verificador continue 0 nao foi encontrado
         {
             puts("Não encontrado, tente novamente");
         }
@@ -979,43 +836,43 @@ void Excluir()
     }
     while (verificador == 0);
 
-    char SN[4];
-    getchar();
+    char SN[4];//Variavel para sim ou nao
+    getchar();//Limapar o buffer
     do
     {
 
-        puts("Deseja excluir esta passagem? Sim ou Nao");
-        fgets(SN, 100, stdin);
+        puts("Deseja excluir esta passagem? Sim ou Nao");//Condição para autorizar exclusão
+        fgets(SN, 100, stdin);//Fgets de 100 para tratamento de erro de digitação
         LetrasMaiusculas(SN);
         TiraN(SN);
 
-        if (strcmp(SN, "NAO") == 0)
+        if (strcmp(SN, "NAO") == 0)//Caso seja não, retorna a main
         {
             main();
         }
 
-        if (strcmp(SN, "SIM") != 0)
+        if (strcmp(SN, "SIM") != 0)//Caso digite algo diferente de sim pedira para ser digitado apenas sim ou nao
         {
             puts("Apenas Sim ou Nao");
         }
     }
-    while (strcmp(SN, "SIM") != 0);
+    while (strcmp(SN, "SIM") != 0);//condição
 
-    FILE *arquivoEscrita = fopen("passagens.txt", "w");
+    FILE *arquivoEscrita = fopen("passagens.txt", "w");//Abre o arquivo apagando tudo o que foi registrado la dentro
 
     fprintf(arquivoEscrita, "%d\n", quantidadeLinhas - 1); // Escreve a nova quantidade de linhas
-    fprintf(arquivoEscrita, "%d\n", ultimoID);
+    fprintf(arquivoEscrita, "%d\n", ultimoID);//Escreve o ultimo ID
 
-    for (int i = 0; i < indice; i++)
+    for (int i = 0; i < indice; i++)//Reescrita do arquivo
     {
-        if (P[i].ID != idExcluir)
+        if (P[i].ID != idExcluir)//Caso a struct nao tenha o ID que deseja ser excluido, será impresso normalmente no arquivo
         {
             fprintf(arquivoEscrita, "%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i].ID,
                     P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
                     P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
                     P[i].Hora_Partida, P[i].Hora_Chegada, P[i].ValorPassagem);
         }
-        else
+        else//Se nao ele sera ignorado pela leitura e prosseguirá sem ele
         {
             puts("Excluindo...");
             printf("%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i].ID,
@@ -1025,22 +882,22 @@ void Excluir()
         }
     }
 
-    fclose(arquivoEscrita);
-    puts("Retornando ao menu");
+    fclose(arquivoEscrita);//Fecha o arquivo
+    puts("Retornando ao menu");//Retorna ao menu
     main();
 }
 
 void Editar()
 {
 
-    FILE *arquivo = fopen("passagens.txt", "r");
+    FILE *arquivo = fopen("passagens.txt", "r");//Abertura do arquivo para leitura dele
 
     int quantidadeLinhas = 0;
     int ultimoID = 0;
     fscanf(arquivo, "%d", &quantidadeLinhas); // Lendo o primeiro numero do arquivo
     fscanf(arquivo, "%d", &ultimoID);         // Lê o ID da última passagem
 
-    if (quantidadeLinhas <= 0 || ultimoID <= 0)
+    if (quantidadeLinhas <= 0 || ultimoID <= 0)//Verifica se tem algo dentro do arquivo
     {
         printf("Arquivo vazio ou mal formatado.\n");
         fclose(arquivo);
@@ -1048,7 +905,7 @@ void Editar()
         printf("\n");
     }
 
-    passagens P[quantidadeLinhas];
+    passagens P[quantidadeLinhas];//Criação do array de struct
 
     int indice = 0;
 
@@ -1058,19 +915,19 @@ void Editar()
                   P[indice].Hora_Partida, P[indice].Hora_Chegada, &P[indice].ValorPassagem) == 9)
     {
         indice++;
-    }
+    }//Registro da struct
 
     fclose(arquivo);
 
-    int idEditar;
+    int idEditar;//Variavel para achar o ID para edição
 
-    Listar_Passagens2();
+    Listar_Passagens2();//Listagem das passagens modificado
 
     int verificador = 0;
     do
     {
         printf("Digite o ID da passagem que deseja editar: ");
-        scanf("%d", &idEditar);
+        scanf("%d", &idEditar);//Scan do ID
 
         for (int i = 0; i < quantidadeLinhas; i++)
         {
@@ -1078,31 +935,31 @@ void Editar()
             {
                 puts("Encontrado");
                 verificador = 1;
-            }
+            }//Verificar se ele foi encontrado
         }
 
-        if (verificador == 0)
+        if (verificador == 0)//Caso verificador nao for modificado, nao foi encontrado
         {
             puts("Nao encontrado, tente novamente");
         }
     }
     while (verificador == 0);
 
-    FILE *arquivoEscrita = fopen("passagens.txt", "w");
+    FILE *arquivoEscrita = fopen("passagens.txt", "w");//Abre o arquivo apagando tudo dentro dele
 
-    fprintf(arquivoEscrita, "%d\n", quantidadeLinhas);
-    fprintf(arquivoEscrita, "%d\n", ultimoID);
+    fprintf(arquivoEscrita, "%d\n", quantidadeLinhas);//Escreve a quanditdade de linhas
+    fprintf(arquivoEscrita, "%d\n", ultimoID);//Escreve o ultimo ID registrado
 
     for (int i = 0; i < indice; i++)
     {
-        if (P[i].ID != idEditar)
+        if (P[i].ID != idEditar)//Caso seja diferente do ID escolhido ele escreve no arquivo a struct normalmente
         {
             fprintf(arquivoEscrita, "%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i].ID,
                     P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
                     P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
                     P[i].Hora_Partida, P[i].Hora_Chegada, P[i].ValorPassagem);
         }
-        else if (P[i].ID == idEditar)
+        else if (P[i].ID == idEditar)//Se não ele ira imprimir a passagem encontrada e irá chamar o CAD_Mod com parametro do ID escolhido para registrar uma passagem atualizada e aí sim imprimir ela no arquivo
         {
             printf("%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i].ID,
                    P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
@@ -1118,34 +975,34 @@ void Editar()
         }
     }
 
-    fclose(arquivoEscrita);
+    fclose(arquivoEscrita);//Fechamento do arquivo
     puts("Editado com sucesso!");
-    puts("Retornando ao menu");
+    puts("Retornando ao menu");//Retorna ao menu
     getchar();
     main();
 }
 
-void pesquisar()
+void pesquisar()//Função de pesquisa
 {
-    if (UltimoID() == 0)
+    if (UltimoID() == 0)//Verificar se o arquivo está preenchido
     {
         puts("Arquivo vazio, favor preencher...Voltando ao menu");
         main();
     }
 
-    char SN[3];
+    char SN[3];//Condição para continuidade da função SIM ou NAO
     int A;
     int linhas = ContaLinha() - 1;
     int teste = linhas;
 
-    FILE *arquivo = fopen("passagens.txt", "r");
+    FILE *arquivo = fopen("passagens.txt", "r");//Abertura do arquivo para leitura
 
     int quantidadedelinhas;
     int UltimoID;
-    fscanf(arquivo, "%d", &quantidadedelinhas);
-    fscanf(arquivo, "%d", &UltimoID);
-    passagens P[linhas];
-    passagens G;
+    fscanf(arquivo, "%d", &quantidadedelinhas);//Scanea a primeira linha do arquivo
+    fscanf(arquivo, "%d", &UltimoID);//Scanea a segunda linha
+    passagens P[linhas];//Array da struct
+    passagens G;//Chamada da struct sem array
 
     for (int i = 0; i < linhas; i++)
     {
@@ -1153,9 +1010,9 @@ void pesquisar()
                P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
                P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
                P[i].Hora_Partida, P[i].Hora_Chegada, &P[i].ValorPassagem);
-    }
+    }//Scanear o arquivo com o array de struct
 
-    fclose(arquivo);
+    fclose(arquivo);//Fecha o arquivo
 
     puts("Por qual maneira voce deseja pesquisar?");
     puts("1-ID da passagem");
