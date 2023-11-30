@@ -18,11 +18,15 @@
 	<string.h>
 	<ctype.h>
 
-1701175902 source:c:\users\1354340\desktop\falhou\aviao\main.c
+1701342301 source:c:\users\1354340\desktop\falhou\aviao\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<ctype.h>
+	<unistd.h>
+	"wallison.h"
 
 1701292047 c:\users\kaiky\onedrive\Área de trabalho\aviaum\aviao\wallison.h
+
+1701342308 c:\users\1354340\desktop\falhou\aviao\wallison.h
 

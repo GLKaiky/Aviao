@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "wallison.h"
+#include <unistd.h>
+#include "wallison.h"//Biblioteca especial
 
 //Menção das Funções
 int Listar_Passagens();
@@ -16,7 +17,6 @@ void Excluir();
 //Função do tipo passagens responsavel por preencher a struct e editar o arquivo
 passagens Cad_Mod(int ID)
 {
-    getchar();//Limpar o buffer
     passagens P;//Chamar struct
 
     P.ID = ID;//Receber o parametro ID passado na função de edição
@@ -179,8 +179,10 @@ passagens Cad_Mod(int ID)
         if (ano > 2050)//Verificar se o ano é valido
         {
             puts("Ano indisponivel ainda");
-        }else if(ano < 1000){
-            puts("4 Digitos");
+        }
+        else if(ano < 1000)
+        {
+            puts("Digite o ano com 4 Digitos\n");
         }
 
     }
@@ -319,6 +321,7 @@ passagens Cad_Mod(int ID)
         while (getchar() != '\n'); // Limpa o buffer de entrada
     }
 
+
     return P;//Retorna a struct foramtada para a função Editar
 }
 
@@ -370,6 +373,8 @@ int main()
     while (atoi(opcao) < 1 || atoi(opcao) > 6 || ApenasNumeros(opcao) == 0);//Condições para ser digitado apenas numeros entre 1 e 6
 
     int opcao1 = atoi(opcao);// Opção 1 recebe um inteiro da string opcao
+
+    Carregamento("\nEncaminhando", 400500);
 
     switch (opcao1)//Menu de opções
     {
@@ -583,6 +588,10 @@ int Cadastro_de_Passagens()//Cadastro de passagens
             {
                 puts("Ano indisponivel ainda");
             }
+            else if(ano < 1000)
+            {
+                puts("Digite o ano com 4 Digitos\n");
+            }
 
         }
         while (ApenasNumeros(P.Data + 6) == 0 || atoi(P.Data + 6) > 2050 || atoi(P.Data + 6) < 1000);
@@ -728,6 +737,7 @@ int Cadastro_de_Passagens()//Cadastro de passagens
         fprintf(arquivo, "R$%.2lf", P.ValorPassagem);
         fprintf(arquivo, "\n");
 
+        Carregamento("\nCadastrando", 400500);
         puts("Cadastrada com sucesso!");
         getchar();
 
@@ -748,7 +758,7 @@ int Cadastro_de_Passagens()//Cadastro de passagens
 
 
 
-int Listar_Passagens()
+int Listar_Passagens()//Listagem
 {
     FILE *arquivo = fopen("passagens.txt", "r");
     if (arquivo == NULL)
@@ -776,7 +786,7 @@ int Listar_Passagens()
     return main();
 }
 
-void Excluir()
+void Excluir()//Excluir
 {
     FILE *arquivo = fopen("passagens.txt", "r");//Abertura do arquivo para leitura
 
@@ -874,20 +884,21 @@ void Excluir()
         }
         else//Se nao ele sera ignorado pela leitura e prosseguirá sem ele
         {
-            puts("Excluindo...");
+
             printf("%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i].ID,
                    P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
                    P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
                    P[i].Hora_Partida, P[i].Hora_Chegada, P[i].ValorPassagem);
         }
     }
-
+    Carregamento("\nExcluindo", 500200);
+    puts("Passagem excluida com sucesso!");
     fclose(arquivoEscrita);//Fecha o arquivo
     puts("Retornando ao menu");//Retorna ao menu
     main();
 }
 
-void Editar()
+void Editar()//Edição
 {
 
     FILE *arquivo = fopen("passagens.txt", "r");//Abertura do arquivo para leitura dele
@@ -919,19 +930,23 @@ void Editar()
 
     fclose(arquivo);
 
-    int idEditar;//Variavel para achar o ID para edição
-
+    char idEditar[100];//Variavel para achar o ID para edição
+    int IdEditar2;
     Listar_Passagens2();//Listagem das passagens modificado
 
     int verificador = 0;
     do
     {
         printf("Digite o ID da passagem que deseja editar: ");
-        scanf("%d", &idEditar);//Scan do ID
+        fgets(idEditar, 100, stdin);//Scan do ID
+        TiraN(idEditar);
+
+        IdEditar2 = atoi(idEditar);
+
 
         for (int i = 0; i < quantidadeLinhas; i++)
         {
-            if (P[i].ID == idEditar)
+            if (P[i].ID == IdEditar2)
             {
                 puts("Encontrado");
                 verificador = 1;
@@ -942,36 +957,43 @@ void Editar()
         {
             puts("Nao encontrado, tente novamente");
         }
+
+        if(ApenasNumeros(idEditar) == 0)
+        {
+            puts("Digite apenas numeros");
+        }
     }
-    while (verificador == 0);
+    while (verificador == 0 || ApenasNumeros(idEditar) == 0);
+
 
     FILE *arquivoEscrita = fopen("passagens.txt", "w");//Abre o arquivo apagando tudo dentro dele
-
     fprintf(arquivoEscrita, "%d\n", quantidadeLinhas);//Escreve a quanditdade de linhas
     fprintf(arquivoEscrita, "%d\n", ultimoID);//Escreve o ultimo ID registrado
 
     for (int i = 0; i < indice; i++)
     {
-        if (P[i].ID != idEditar)//Caso seja diferente do ID escolhido ele escreve no arquivo a struct normalmente
+        if (P[i].ID != IdEditar2)//Caso seja diferente do ID escolhido ele escreve no arquivo a struct normalmente
         {
             fprintf(arquivoEscrita, "%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i].ID,
                     P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
                     P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
                     P[i].Hora_Partida, P[i].Hora_Chegada, P[i].ValorPassagem);
         }
-        else if (P[i].ID == idEditar)//Se não ele ira imprimir a passagem encontrada e irá chamar o CAD_Mod com parametro do ID escolhido para registrar uma passagem atualizada e aí sim imprimir ela no arquivo
+        else if (P[i].ID == IdEditar2)//Se não ele ira imprimir a passagem encontrada e irá chamar o CAD_Mod com parametro do ID escolhido para registrar uma passagem atualizada e aí sim imprimir ela no arquivo
         {
+
             printf("%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", P[i].ID,
                    P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
                    P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
                    P[i].Hora_Partida, P[i].Hora_Chegada, P[i].ValorPassagem);
 
-            passagens G = Cad_Mod(idEditar);
+
+            passagens G = Cad_Mod(IdEditar2);//A struct da variavel G recebe o retorno da função
 
             fprintf(arquivoEscrita, "%d;%s;%s;%s;%s;%s;%s;%s;R$%.2lf\n", G.ID,
                     G.codAeroporto_Origem, G.codAeroporto_Destino,
                     G.CidadeOrigem, G.CidadeDestino, G.Data,
-                    G.Hora_Partida, G.Hora_Chegada, G.ValorPassagem);
+                    G.Hora_Partida, G.Hora_Chegada, G.ValorPassagem);//Imprime a passagem editada no arquivo
         }
     }
 
@@ -1014,6 +1036,7 @@ void pesquisar()//Função de pesquisa
 
     fclose(arquivo);//Fecha o arquivo
 
+    //Menu de pesquisa
     puts("Por qual maneira voce deseja pesquisar?");
     puts("1-ID da passagem");
     puts("2-Aeroporto de Origem");
@@ -1022,6 +1045,7 @@ void pesquisar()//Função de pesquisa
     puts("5-Cidade de Destino");
 
     scanf("%d", &A);
+    Carregamento("\nEncaminhando", 400000);
     switch (A)
     {
 
@@ -1036,11 +1060,12 @@ void pesquisar()//Função de pesquisa
             scanf("%d", &G.ID);
             verificar = 0;
 
+            Carregamento("\nBuscando", 500400);
             for (int i = 0; i < linhas; i++)
             {
-                if (P[i].ID == G.ID)
+                if (P[i].ID == G.ID)//Compada o ID escolhido com os disponiveis registrados na struct
                 {
-                    printf("Encontrado:\n");
+                    printf("Encontrado:\n");//Quando encontrado ele é impresso
                     printf("%d;%s;%s;%s;%s;%s;%s;%s;%.2lf\n", P[i].ID,
                            P[i].codAeroporto_Origem, P[i].codAeroporto_Destino,
                            P[i].CidadeOrigem, P[i].CidadeDestino, P[i].Data,
@@ -1048,10 +1073,10 @@ void pesquisar()//Função de pesquisa
                     verificar = 1;
                 }
             }
-            if (verificar == 0)
+            if (verificar == 0)//Caso verificar nao se altere, ele trata dizendo que nao foi encontrado
             {
 
-                getchar();
+                getchar();//Limpa o buffer
 
                 do
                 {
@@ -1060,12 +1085,12 @@ void pesquisar()//Função de pesquisa
                     LetrasMaiusculas(SN);
                     TiraN(SN);
 
-                    if (strcmp(SN, "NAO") == 0)
+                    if (strcmp(SN, "NAO") == 0)//Caso digitado nao ele sai da repetição
                     {
                         break;
                     }
 
-                    if (strcmp(SN, "SIM") == 0)
+                    if (strcmp(SN, "SIM") == 0)//Caso seja digitado Sim ele repete pois o while irá considerar SIM uma repetição
                     {
                         break;
                     }
@@ -1076,7 +1101,7 @@ void pesquisar()//Função de pesquisa
             else if (verificar == 1)
             {
 
-                getchar();
+                getchar();//Limpa o Buffer
                 do
                 {
                     puts("Fazer outro teste?");
@@ -1110,7 +1135,7 @@ void pesquisar()//Função de pesquisa
 
     // Pesquisa por aeroporto de origem
     case 2:
-        getchar();
+        getchar();//Limpar o buffer
         do
         {
 
@@ -1131,13 +1156,15 @@ void pesquisar()//Função de pesquisa
                     printf("Digite apenas 3 letras.\n");
                 }
             }
-            while (ApenasLetras(G.codAeroporto_Origem) == 0 || verificarTam(G.codAeroporto_Origem, 3) == 0);
+            while (ApenasLetras(G.codAeroporto_Origem) == 0 || verificarTam(G.codAeroporto_Origem, 3) == 0);//Tratamento para erros
 
             LetrasMaiusculas(G.codAeroporto_Origem);
 
+            Carregamento("\nBuscando", 500400);
+
             for (int i = 0; i < linhas; i++)
             {
-                if (strcmp(G.codAeroporto_Origem, P[i].codAeroporto_Origem) == 0)
+                if (strcmp(G.codAeroporto_Origem, P[i].codAeroporto_Origem) == 0)//Compara o codigo desejado com os da Struct ate encotrar
                 {
                     printf("Encontrado:\n");
                     printf("%d;%s;%s;%s;%s;%s;%s;%s;%.2lf\n", P[i].ID,
@@ -1151,7 +1178,7 @@ void pesquisar()//Função de pesquisa
                 }
             }
 
-            if (teste == 0)
+            if (teste == 0)//Tratamento de Erros no codigo
             {
 
                 do
@@ -1211,12 +1238,12 @@ void pesquisar()//Função de pesquisa
 
             teste = linhas;
         }
-        while (strcmp(SN, "SIM") == 0);
+        while (strcmp(SN, "SIM") == 0);//Condições
 
         break;
 
     case 3:
-        getchar();
+        getchar();//Limpar o buffer
         // Pesquisa por aeroporto de destino
         do
         {
@@ -1243,11 +1270,13 @@ void pesquisar()//Função de pesquisa
             LetrasMaiusculas(G.codAeroporto_Destino);
             fprintf(arquivo, "%s;", G.codAeroporto_Destino);
 
+            Carregamento("\nBuscando", 500400);
+
             teste = linhas;
 
             for (int i = 0; i < linhas; i++)
             {
-                if (strcmp(G.codAeroporto_Destino, P[i].codAeroporto_Destino) == 0)
+                if (strcmp(G.codAeroporto_Destino, P[i].codAeroporto_Destino) == 0)//Compada o codigo com os da Struct
                 {
                     printf("Encontrado:\n");
                     printf("%d;%s;%s;%s;%s;%s;%s;%s;%.2lf\n", P[i].ID,
@@ -1321,14 +1350,14 @@ void pesquisar()//Função de pesquisa
 
             teste = linhas;
         }
-        while (strcmp(SN, "SIM") == 0);
+        while (strcmp(SN, "SIM") == 0);//Condições
 
         break;
 
     // Pesquisa por cidade de origem
 
     case 4:
-        getchar();
+        getchar();//Limpar o Buffer de entrada
         do
         {
 
@@ -1350,9 +1379,11 @@ void pesquisar()//Função de pesquisa
 
             teste = linhas;
 
+            Carregamento("\nBuscando", 500400);
+
             for (int i = 0; i < linhas; i++)
             {
-                if (strcmp(G.CidadeOrigem, P[i].CidadeOrigem) == 0)
+                if (strcmp(G.CidadeOrigem, P[i].CidadeOrigem) == 0)//Compata a cidade digitada com as disponiveis
                 {
                     printf("Encontrado:\n");
                     printf("%d;%s;%s;%s;%s;%s;%s;%s;%.2lf\n", P[i].ID,
@@ -1454,6 +1485,7 @@ void pesquisar()//Função de pesquisa
             fprintf(arquivo, "%s;", G.CidadeDestino);
 
             teste = linhas;
+            Carregamento("\nBuscando", 500400);
 
             for (int i = 0; i < linhas; i++)
             {
@@ -1535,6 +1567,6 @@ void pesquisar()//Função de pesquisa
 
         break;
     }
-    puts("\nVoltando para o menu\n");
+    Carregamento("\nVoltando ao menu", 500400);//Retorna a main a cada pesquisa bem sucedida e nao quiser fazer outra
     main();
 }

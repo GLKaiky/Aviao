@@ -1,17 +1,17 @@
-
 // Struct de passagens
 
 typedef struct passagens
 {
-    char codAeroporto_Origem[100]; //As strings foram deixadas de tamanho grande para tratamento de erros de digitação
-    char codAeroporto_Destino[100];
-    char CidadeOrigem[100];
-    char CidadeDestino[100];
-    char Data[15];
-    char Hora_Partida[100];
-    char Hora_Chegada[100];
-    double ValorPassagem;
-    int ID;
+    //As strings foram deixadas de tamanho grande para tratamento de erros de digitação
+    char codAeroporto_Origem[100]; //Registro de Codigo de aeroporto
+    char codAeroporto_Destino[100]; //Registro de codigo de aeroporto de destino
+    char CidadeOrigem[100];//Registro de Cidade de Origem
+    char CidadeDestino[100];//Registro de Cidade de Destino
+    char Data[15]; //Registro de Data
+    char Hora_Partida[100];//Registro de Hora de Partida
+    char Hora_Chegada[100];//Registro da Hora de chegada
+    double ValorPassagem; //Valor da passagem
+    int ID;//ID das passagens
 
 } passagens;
 
@@ -157,5 +157,20 @@ int Listar_Passagens2()//Listagem de passagens modificada para a função de exc
     puts("---------------------------------------------------------");
 
     fclose(arquivo);
+}
+
+void Carregamento(char *str, int delay)
+{
+    int i;
+
+    printf("%s", str);
+
+    for (i = 0; i < 3; i++)
+    {
+        printf(".");
+        fflush(stdout);
+        usleep(delay);
+    }
+    printf("\n");
 }
 
