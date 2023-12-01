@@ -774,8 +774,6 @@ void pesquisar()//Função de pesquisa
             if (verificar == 0)//Caso verificar nao se altere, ele trata dizendo que nao foi encontrado
             {
 
-                getchar();//Limpa o buffer
-
                 do
                 {
                     puts("Nao encontrado, tentar novamente? Sim ou Nao");
