@@ -1,5 +1,4 @@
-// Struct de passagens
-
+//Definição da Struct de Passagens
 typedef struct passagens
 {
     //As strings foram deixadas de tamanho grande para tratamento de erros de digitação
@@ -14,7 +13,6 @@ typedef struct passagens
     int ID;//ID das passagens
 
 } passagens;
-
 // Funções Uteis
 
 // Verificar tamanho com retorno
