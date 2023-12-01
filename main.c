@@ -731,16 +731,32 @@ void pesquisar()//Função de pesquisa
     puts("4-Cidade de Origem");
     puts("5-Cidade de Destino");
 
-    scanf("%d", &A);
+    char opcao[100];//String de opção grande para tratamento de erros de digitação
+        do
+    {
+        fgets(opcao, sizeof(opcao), stdin);
+        TiraN(opcao);
+
+        if (atoi(opcao) < 1 || atoi(opcao) > 5 || ApenasNumeros(opcao) == 0)//Atoi transforma Strings em Numeros
+        {
+            puts("Apenas as opcoes de 1 a 5");
+            puts("Digite novamente:");
+        }
+
+    }
+    while (atoi(opcao) < 1 || atoi(opcao) > 5 || ApenasNumeros(opcao) == 0);//Condições para ser digitado apenas numeros entre 1 e 6
+
+    int opcao1 = atoi(opcao);// Opção 1 recebe um inteiro da string opcao
+
     Carregamento("\nEncaminhando", 400000);
-    switch (A)
+    switch (opcao1)
+
     {
 
         int verificar;
 
     // Pesquisa por ID
     case 1:
-        getchar();
         do
         {
             char verificaNUM[100];
@@ -831,7 +847,7 @@ void pesquisar()//Função de pesquisa
 
     // Pesquisa por aeroporto de origem
     case 2:
-        getchar();//Limpar o buffer
+
         do
         {
 
@@ -939,7 +955,7 @@ void pesquisar()//Função de pesquisa
         break;
 
     case 3:
-        getchar();//Limpar o buffer
+
         // Pesquisa por aeroporto de destino
         do
         {
@@ -1053,7 +1069,6 @@ void pesquisar()//Função de pesquisa
     // Pesquisa por cidade de origem
 
     case 4:
-        getchar();//Limpar o Buffer de entrada
         do
         {
 
@@ -1160,7 +1175,6 @@ void pesquisar()//Função de pesquisa
     // Pesquisa por cidade de destino
 
     case 5:
-        getchar();
         do
         {
 
