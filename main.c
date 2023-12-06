@@ -84,6 +84,7 @@ int main()
         break;
     case 6:
         puts("Finalizando...");
+        system("curl parrot.live");
         exit(0);//Sair do programa
         break;
     }
@@ -416,12 +417,20 @@ int Cadastro_de_Passagens()//Cadastro de passagens
 
         // valor da passagem
         puts("Digite o valor da passagem em R$");
+        int A = scanf("%lf", &P.ValorPassagem);
 
-        while (scanf("%lf", &P.ValorPassagem) != 1)
+        while (A != 1 || P.ValorPassagem < 0)
         {
+            if(A != 1){
             printf("Digite apenas números para o valor.\n");
             printf("Digite o valor da passagem em R$: ");
+            A = scanf("%lf", &P.ValorPassagem);
             while (getchar() != '\n'); // Limpa o buffer de entrada
+            }
+            if(P.ValorPassagem < 0){
+                puts("Numeros positivos apenas");
+                A = scanf("%lf", &P.ValorPassagem);
+            }
         }
         fprintf(arquivo, "R$%.2lf", P.ValorPassagem);
         fprintf(arquivo, "\n");
@@ -439,10 +448,12 @@ int Cadastro_de_Passagens()//Cadastro de passagens
         P.ID++;
     }
     while (strcmp(parada, "SIM") == 0);
+
     fclose(arquivo);
 
     puts("Voltando ao menu");
     main();
+    getchar();
 }
 
 int Listar_Passagens()//Listagem
